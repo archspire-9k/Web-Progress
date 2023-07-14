@@ -71,6 +71,13 @@
         }
 
         render();
+
+        this.tl = new TimelineMax({ paused: 'true'});
+        this.tl.to(this.box.scale, 1, {x:4, ease: Expo.easeOut});
+        this.tl.to(this.box.scale, .5, {x:0.5, ease: Expo.easeOut});
+        this.tl.to(this.box.position, 2, {x:2, ease: Expo.easeOut});
+        this.tl.to(this.box.rotation, 0.25, {y: Math.PI * .5, ease: Expo.easeOut}, "=-1.5");
+
         
     </script>
 </body>
