@@ -56,7 +56,14 @@
             var intersects = raycaster.intersectObjects(scene.children, true);
 
             for (let i = 0; i < intersects.length; i++) {
-                intersects[i].object.material.color.set(0xff0000);
+                // change color on method call
+                // intersects[i].object.material.color.set(0xff0000);
+
+                this.tl = new TimelineMax();
+                this.tl.to(intersects[i].object.scale, 1, { x: 4, ease: Expo.easeOut });
+                this.tl.to(intersects[i].object.scale, .5, { x: 0.5, ease: Expo.easeOut });
+                this.tl.to(intersects[i].object.position, 2, { x: 2, ease: Expo.easeOut });
+                this.tl.to(intersects[i].object.rotation, 0.25, { y: Math.PI * .5, ease: Expo.easeOut }, "=-1.5");
             }
         }
 
@@ -93,12 +100,6 @@
         }
 
         render();
-
-        this.tl = new TimelineMax({ paused: 'true' });
-        this.tl.to(this.box.scale, 1, { x: 4, ease: Expo.easeOut });
-        this.tl.to(this.box.scale, .5, { x: 0.5, ease: Expo.easeOut });
-        this.tl.to(this.box.position, 2, { x: 2, ease: Expo.easeOut });
-        this.tl.to(this.box.rotation, 0.25, { y: Math.PI * .5, ease: Expo.easeOut }, "=-1.5");
 
         window.addEventListener('mousemove', onPointerMove)
     </script>
