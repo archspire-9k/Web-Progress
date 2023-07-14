@@ -78,7 +78,9 @@
         this.tl.to(this.box.position, 2, {x:2, ease: Expo.easeOut});
         this.tl.to(this.box.rotation, 0.25, {y: Math.PI * .5, ease: Expo.easeOut}, "=-1.5");
 
-        
+        document.body.addEventListener('click', () => {
+            this.tl.play();
+        })
     </script>
 </body>
 
