@@ -69,8 +69,17 @@
 
         // define shape, material, and create mesh from them
         var geometry = new THREE.BoxGeometry(1, 1, 1);
-        var material = new THREE.MeshLambertMaterial({ color: 0xffcc00 });
-        var box = new THREE.Mesh(geometry, material);
+        var material = new THREE.MeshLambertMaterial({ color: 0xf7f7f7 });
+
+        boxX = -10;
+        for (let i = 0; i < 15; i++) {
+            var box = new THREE.Mesh(geometry, material);
+            box.position.x = (Math.random() - 0.5) * 10;
+            box.position.y = (Math.random() - 0.5) * 10;
+            box.position.z = (Math.random() - 0.5) * 10;
+            scene.add(box);
+            boxX+=1;
+        }
 
         // position
         // box.position.set(-2, 2, 0);
@@ -80,8 +89,6 @@
 
         // scale
         // box.scale.set(1, 2, 1);
-
-        scene.add(box);
 
         var light = new THREE.PointLight(0xFFFFFF, 1, 500);
         light.position.set(10, 0, 25);
