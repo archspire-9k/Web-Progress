@@ -3,7 +3,7 @@ import { gsap } from "gsap";
 import { Expo } from 'gsap';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
+import * as dat from 'dat.gui;'
 
 
 
@@ -32,11 +32,21 @@ const box = new THREE.Mesh(boxGeometry, boxMaterial);
 
 scene.add(box);
 
-const sphereGeometry = new THREE.SphereGeometry(6, 3, 12);
+const sphereGeometry = new THREE.SphereGeometry(6, 60, 60);
 const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xFFF, wireframe: true });
 const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
 
 scene.add(sphere);
+
+const gui = new dat.GUI();
+
+const options = {
+    sphereColor: '#ffea00'
+};
+
+gui.addColor(options, 'sphereColor').onChange(function(e) {
+     sphere.material.color.set(e);
+});
 
 var camera = new THREE.PerspectiveCamera(
     45,
