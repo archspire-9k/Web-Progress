@@ -3,7 +3,7 @@ import { gsap } from "gsap";
 import { Expo } from 'gsap';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import * as dat from 'dat.gui;'
+import * as dat from 'dat.gui';
 
 
 
@@ -14,7 +14,7 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 var scene = new THREE.Scene();
 
-const axis = new THREE.AxesHelper(3);
+const axis = new THREE.AxesHelper(5);
 scene.add(axis);
 
 const gridHelper = new THREE.GridHelper(30);
@@ -32,20 +32,26 @@ const box = new THREE.Mesh(boxGeometry, boxMaterial);
 
 scene.add(box);
 
-const sphereGeometry = new THREE.SphereGeometry(6, 60, 60);
-const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xFFF, wireframe: true });
+const sphereGeometry = new THREE.SphereGeometry(4, 60, 60);
+const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xFFF });
 const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
 
 scene.add(sphere);
+sphere.position.set(3, 10, -13)
 
 const gui = new dat.GUI();
 
 const options = {
-    sphereColor: '#ffea00'
+    sphereColor: '#ffea00',
+    wireframe: false
 };
 
 gui.addColor(options, 'sphereColor').onChange(function(e) {
      sphere.material.color.set(e);
+});
+
+gui.add(options, 'wireframe').onChange(function(e) {
+    sphere.material.wireframe = e;
 });
 
 var camera = new THREE.PerspectiveCamera(
@@ -105,23 +111,17 @@ function onPointerUp() {
     isMouseUp = false;
 }
 
-var light = new THREE.PointLight(0xFFFFFF, 1, 500);
-light.position.set(0, -5, 0);
-
-scene.add(light);
-
-var light = new THREE.PointLight(0xFFFFFF, 2, 1000);
-light.position.set(0, 5, 25);
-
-scene.add(light);
+let step = 0;
+let speed = 0.01;
 
 var render = function () {
     requestAnimationFrame(render);
-
     // put animation(s) here
     box.rotation.x += 0.05;
     box.rotation.y += 0.01;
 
+    step += speed;
+    sphere.position.y = 10 * Math.abs(Math.sin(step));
     renderer.render(scene, camera);
 }
 
