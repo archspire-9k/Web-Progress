@@ -8,6 +8,7 @@ import * as dat from 'dat.gui';
 
 
 var renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.shadowMap.enabled = true;
 renderer.setClearColor("#e5e5e5");
 renderer.setSize(window.innerWidth, window.innerHeight);
 
@@ -20,24 +21,42 @@ scene.add(axis);
 const gridHelper = new THREE.GridHelper(30);
 scene.add(gridHelper);
 
-const planeGeometry = new THREE.PlaneGeometry(30, 30);
-const planeMaterial = new THREE.MeshBasicMaterial({ color: 0xFFFFFF, side: THREE.DoubleSide })
+const planeGeometry = new THREE.PlaneGeometry(60, 60);
+const planeMaterial = new THREE.MeshStandardMaterial({ color: 0xFFFFFF, side: THREE.DoubleSide })
 const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+plane.receiveShadow = true;
 scene.add(plane);
 plane.rotation.x = -0.5 * Math.PI;
 
 const boxGeometry = new THREE.BoxGeometry(3, 3, 3);
-const boxMaterial = new THREE.MeshBasicMaterial({ color: 0xFFFFF })
+const boxMaterial = new THREE.MeshStandardMaterial({ color: 0xFFFFF })
 const box = new THREE.Mesh(boxGeometry, boxMaterial);
 
 scene.add(box);
 
 const sphereGeometry = new THREE.SphereGeometry(4, 60, 60);
-const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xFFF });
+const sphereMaterial = new THREE.MeshStandardMaterial({ color: 0xFFF });
 const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+sphere.castShadow = true;
 
 scene.add(sphere);
 sphere.position.set(3, 10, -13)
+
+const ambienceLight = new THREE.AmbientLight(0x375243);
+scene.add(ambienceLight);
+
+const directionalLight = new THREE.DirectionalLight(0xFFFFFF, 0.8);
+scene.add(directionalLight);
+directionalLight.position.set(40, 30, -90);
+directionalLight.castShadow = true;
+directionalLight.shadow.camera.top = 12;
+directionalLight.shadow.camera.right = 12;
+
+const directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight, 5);
+scene.add(directionalLightHelper);
+
+const directionalLightShadowHelper = new THREE.CameraHelper(directionalLight.shadow.camera);
+scene.add(directionalLightShadowHelper);
 
 const gui = new dat.GUI();
 
