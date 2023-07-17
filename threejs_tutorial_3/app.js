@@ -4,14 +4,23 @@ import { Expo } from 'gsap';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import * as dat from 'dat.gui';
+import nebula from './src/img/nebula.jpg';
+import star from './src/img/stars.jpg';
 
 var renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.shadowMap.enabled = true;
-renderer.setClearColor("#e5e5e5");
+// renderer.setClearColor(0xffea00);
+
 renderer.setSize(window.innerWidth, window.innerHeight);
 
 document.body.appendChild(renderer.domElement);
 var scene = new THREE.Scene();
+
+// set texture to scene background
+const textureLoader = new THREE.TextureLoader();
+scene.background = textureLoader.load(star);
+
+
 
 const axis = new THREE.AxesHelper(5);
 scene.add(axis);
@@ -30,11 +39,11 @@ const options = {
     intensity: 1
 };
 
-gui.addColor(options, 'sphereColor').onChange(function(e) {
-     sphere.material.color.set(e);
+gui.addColor(options, 'sphereColor').onChange(function (e) {
+    sphere.material.color.set(e);
 });
 
-gui.add(options, 'wireframe').onChange(function(e) {
+gui.add(options, 'wireframe').onChange(function (e) {
     sphere.material.wireframe = e;
 });
 
@@ -46,7 +55,7 @@ gui.add(options, "penumbra", 0, 1);
 
 gui.add(options, "intensity", 0, 1);
 
-const planeGeometry = new THREE.PlaneGeometry(60, 60);
+const planeGeometry = new THREE.PlaneGeometry(30, 30);
 const planeMaterial = new THREE.MeshStandardMaterial({ color: 0xFFFFFF, side: THREE.DoubleSide })
 const plane = new THREE.Mesh(planeGeometry, planeMaterial);
 plane.receiveShadow = true;
@@ -85,14 +94,17 @@ scene.add(ambienceLight);
 
 const spotLight = new THREE.SpotLight();
 scene.add(spotLight);
-spotLight.position.set(3, 30, -90);
+spotLight.position.set(3, 30, -30);
 spotLight.castShadow = true;
 
 const spotLightHelper = new THREE.SpotLightHelper(spotLight);
 scene.add(spotLightHelper);
 
 //add fog
-scene.fog
+// scene.fog = new THREE.Fog(0xffffff, 0, 200);
+
+//add fog exp2: grow exponentially to camera position
+// scene.fog = new THREE.FogExp2(0xffffff, 0.01);
 
 var camera = new THREE.PerspectiveCamera(
     45,
