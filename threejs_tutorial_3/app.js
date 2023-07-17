@@ -43,7 +43,8 @@ const gui = new dat.GUI();
 
 const options = {
     sphereColor: '#ffea00',
-    wireframe: false
+    wireframe: false,
+    speed: 0.01
 };
 
 gui.addColor(options, 'sphereColor').onChange(function(e) {
@@ -53,6 +54,8 @@ gui.addColor(options, 'sphereColor').onChange(function(e) {
 gui.add(options, 'wireframe').onChange(function(e) {
     sphere.material.wireframe = e;
 });
+
+gui.add(options, "speed", 0, 0.1);
 
 var camera = new THREE.PerspectiveCamera(
     45,
@@ -112,7 +115,6 @@ function onPointerUp() {
 }
 
 let step = 0;
-let speed = 0.01;
 
 var render = function () {
     requestAnimationFrame(render);
@@ -120,7 +122,7 @@ var render = function () {
     box.rotation.x += 0.05;
     box.rotation.y += 0.01;
 
-    step += speed;
+    step += options.speed;
     sphere.position.y = 10 * Math.abs(Math.sin(step));
     renderer.render(scene, camera);
 }
