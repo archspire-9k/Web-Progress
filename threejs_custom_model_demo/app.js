@@ -31,9 +31,9 @@ const options = {
     angle: 0.2,
     penumbra: 0,
     intensity: 1,
-    positionX: -20,
-    positionY: 30,
-    positionZ: 30,
+    positionX: 0,
+    positionY: 20,
+    positionZ: 40,
     top: 0,
     bottom: -12,
     right: 0,
@@ -53,9 +53,9 @@ gui.add(options, "bottom", -20, 20);
 gui.add(options, "left", -20, 20);
 gui.add(options, "right", -20, 20);
 
-gui.add(options, "positionX", -30, 30);
-gui.add(options, "positionY", -30, 30);
-gui.add(options, "positionZ", -30, 30);
+gui.add(options, "positionX", -100, 100);
+gui.add(options, "positionY", -100, 100);
+gui.add(options, "positionZ", -100, 100);
 
 const spotLight = new THREE.SpotLight();
 spotLight.position.set(-3, 20, 3);
@@ -109,7 +109,7 @@ var camera = new THREE.PerspectiveCamera(
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
-camera.position.set(0, 20, 40);
+camera.position.set(options.positionX, options.positionY, options.positionZ);
 controls.update();
 
 let isMouseDown = false;
@@ -183,15 +183,9 @@ var render = function () {
     spotLight.penumbra = options.penumbra;
     spotLight.intensity = options.intensity;
     spotLightHelper.update();
-    // directionalLight.intensity = options.intensity;
-    // directionalLight.shadow.camera.bottom = options.bottom;
-    // directionalLight.shadow.camera.top = options.top;
-    // directionalLight.shadow.camera.right = options.right;
-    // directionalLight.shadow.camera.left = options.left;
-    // directionalLight.position.set(options.positionX, options.positionY, options.positionZ)
-    // directionalLightHelper.update();
 
-
+    camera.position.set(options.positionX, options.positionY, options.positionZ);
+    
     renderer.render(scene, camera);
 }
 
