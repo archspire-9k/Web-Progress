@@ -77,6 +77,27 @@ sphere.castShadow = true;
 scene.add(sphere);
 sphere.position.set(3, 10, -13)
 
+const vShader = `
+    void main() {
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }
+`; 
+
+const fShader = `
+    void main() {
+        gl_FragColor = vec4(1.0, 0.3, 0.1, 1.0);
+    }
+`;
+
+const sphere2Geometry = new THREE.SphereGeometry(4);
+const sphere2Material = new THREE.ShaderMaterial({
+    vertexShader: vShader,
+    fragmentShader: fShader
+});
+const sphere2 = new THREE.Mesh(sphere2Geometry, sphere2Material);
+scene.add(sphere2);
+sphere2.position.set(-15, 10, 10);
+
 const ambienceLight = new THREE.AmbientLight(0x375243);
 scene.add(ambienceLight);
 
