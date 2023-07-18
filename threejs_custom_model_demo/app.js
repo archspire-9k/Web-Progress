@@ -143,7 +143,7 @@ function onPointerClick(event) {
         y: 1.3,
         z: 10,
         duration: 3,
-        ease: Expo.easeIn
+        ease: Expo.easeOut
     })
 }
 
@@ -191,5 +191,5 @@ var render = function () {
 
 render();
 
-window.addEventListener('click', onPointerClick);
+window.addEventListener('mouseup', onPointerClick);
 window.addEventListener('pointermove', onPointerMove);
