@@ -14,7 +14,7 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 var scene = new THREE.Scene();
 
-
+const plane = new THREE.Plane(new THREE.Vector3( 0, 1, 0));
 
 const axis = new THREE.AxesHelper(5);
 scene.add(axis);
@@ -58,7 +58,7 @@ gui.add(options, "positionY", -30, 30);
 gui.add(options, "positionZ", -30, 30);
 
 const spotLight = new THREE.SpotLight();
-spotLight.position.set(6, 20, -6);
+spotLight.position.set(-3, 20, 3);
 spotLight.castShadow = true;
 scene.add(spotLight);
 
@@ -69,10 +69,10 @@ spotLight.shadow.camera.near = 0.5; // default
 spotLight.shadow.camera.far = 500; // default
 spotLight.shadow.focus = 1; // default
 
-const spotLightHelper = new THREE.SpotLightHelper( spotLight );
+const spotLightHelper = new THREE.SpotLightHelper(spotLight);
 scene.add(spotLightHelper);
 
-const spotLightShadowHelper = new THREE.CameraHelper( spotLight.shadow.camera );
+const spotLightShadowHelper = new THREE.CameraHelper(spotLight.shadow.camera);
 scene.add(spotLightShadowHelper);
 
 // Optional: Provide a DRACOLoader instance to decode compressed mesh data
@@ -84,8 +84,7 @@ loader.setDRACOLoader(dracoLoader);
 loader.setPath('./isometric_office/');
 loader.load('untitled.gltf', function (gltf) {
 
-    scene.add(gltf.scene); 
-    console.log(gltf.scene.receiveShadow);
+    scene.add(gltf.scene);
     gltf.scene.receiveShadow = true;
     gltf.scene.castShadow = true;
 
@@ -100,12 +99,6 @@ loader.load('untitled.gltf', function (gltf) {
 
     }
 );
-
-//add fog
-// scene.fog = new THREE.Fog(0xffffff, 0, 200);
-
-//add fog exp2: grow exponentially to camera position
-// scene.fog = new THREE.FogExp2(0xffffff, 0.01);
 
 var camera = new THREE.PerspectiveCamera(
     45,
@@ -132,6 +125,7 @@ window.addEventListener('resize', () => {
 // implement raycaster to allow cursor-object interaction 
 var raycaster = new THREE.Raycaster();
 var pointer = new THREE.Vector2();
+var position = new THREE.Vector3();
 
 function onPointerClick(event) {
 
@@ -162,7 +156,14 @@ function onPointerMove(event) {
     event.preventDefault();
     pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
     pointer.y = - (event.clientY / window.innerHeight) * 2 + 1;
-    spotLight.target.position.set(pointer.x, 0, -pointer.y);   
+   
+    // update the picking ray with the camera and pointer position
+    raycaster.setFromCamera(pointer, camera);
+
+    raycaster.ray.intersectPlane(plane, position);
+
+    spotLight.target.position.set(position.x, 0, position.z);
+
 }
 
 function onPointerDown() {
@@ -197,4 +198,4 @@ var render = function () {
 render();
 
 window.addEventListener('click', onPointerClick);
-window.addEventListener('mousemove', onPointerMove);
+window.addEventListener('pointermove', onPointerMove);
