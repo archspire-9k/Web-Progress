@@ -2,6 +2,8 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
+import { gsap } from 'gsap';
+import { Expo } from 'gsap';
 import * as dat from 'dat.gui';
 
 var renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -14,7 +16,7 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 var scene = new THREE.Scene();
 
-const plane = new THREE.Plane(new THREE.Vector3( 0, 1, 0));
+const plane = new THREE.Plane(new THREE.Vector3(0, 1, 0));
 
 const axis = new THREE.AxesHelper(5);
 scene.add(axis);
@@ -122,41 +124,39 @@ window.addEventListener('resize', () => {
     camera.updateProjectionMatrix();
 })
 
+const tl = gsap.timeline();
+function onPointerClick(event) {
+    // tl.to(camera.position, {
+    //     x: -4, duration: 1.5, onUpdate: function () {
+    //         camera.lookAt(-4, 1.3, 10);
+    //     }
+    // })
+
+    // tl.to(camera.position, {
+    //     y: 1.3, duration: 1.5, onUpdate: function () {
+    //         camera.lookAt(-4, 1.3, 10);
+    //     }
+    // })
+
+    tl.to(camera.position, {
+        x: -4,
+        y: 1.3,
+        z: 10,
+        duration: 3,
+        ease: Expo.easeIn
+    })
+}
+
 // implement raycaster to allow cursor-object interaction 
 var raycaster = new THREE.Raycaster();
 var pointer = new THREE.Vector2();
 var position = new THREE.Vector3();
 
-function onPointerClick(event) {
-
-    // calculate pointer position in normalized device coordinates
-    // (-1 to +1) for both components
-    event.preventDefault();
-    pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
-    pointer.y = - (event.clientY / window.innerHeight) * 2 + 1;
-
-    // update the picking ray with the camera and pointer position
-    raycaster.setFromCamera(pointer, camera);
-
-    // calculate objects intersecting the picking ray
-    var intersects = raycaster.intersectObjects(scene.children, true);
-
-    // put animation(s) here
-
-    for (let i = 0; i < intersects.length; i++) {
-        // change color on method call
-        // intersects[i].object.material.color.set(0xe5e5e5);
-    }
-    if (isMouseDown) {
-
-    }
-}
-
 function onPointerMove(event) {
     event.preventDefault();
     pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
     pointer.y = - (event.clientY / window.innerHeight) * 2 + 1;
-   
+
     // update the picking ray with the camera and pointer position
     raycaster.setFromCamera(pointer, camera);
 
@@ -184,8 +184,8 @@ var render = function () {
     spotLight.intensity = options.intensity;
     spotLightHelper.update();
 
-    camera.position.set(options.positionX, options.positionY, options.positionZ);
-    
+    // camera.position.set(options.positionX, options.positionY, options.positionZ);
+
     renderer.render(scene, camera);
 }
 
