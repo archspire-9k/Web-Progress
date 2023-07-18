@@ -65,6 +65,7 @@ plane.rotation.x = -0.5 * Math.PI;
 const boxGeometry = new THREE.BoxGeometry(3, 3, 3);
 const boxMaterial = new THREE.MeshStandardMaterial({ color: 0xFFFFF })
 const box = new THREE.Mesh(boxGeometry, boxMaterial);
+box.name = 'theBox';
 
 scene.add(box);
 
@@ -115,7 +116,7 @@ var camera = new THREE.PerspectiveCamera(
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
-camera.position.set(0, 2, 40);
+camera.position.set(0, 20, 40);
 controls.update();
 
 let isMouseDown = false;
@@ -140,16 +141,6 @@ function onPointerMove(event) {
     pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
     pointer.y = - (event.clientY / window.innerHeight) * 2 + 1;
 
-    // // update the picking ray with the camera and pointer position
-    // raycaster.setFromCamera(pointer, camera);
-
-    // // calculate objects intersecting the picking ray
-    // var intersects = raycaster.intersectObjects(scene.children, true);
-
-    // for (let i = 0; i < intersects.length; i++) {
-    //     // change color on method call
-    //     // intersects[i].object.material.color.set(0xff0000);
-
     if (isMouseDown) {
 
     }
@@ -164,12 +155,30 @@ function onPointerUp() {
 }
 
 let step = 0;
+const sphereID = sphere.id;
 
 var render = function () {
     requestAnimationFrame(render);
+
+    // // update the picking ray with the camera and pointer position
+    raycaster.setFromCamera(pointer, camera);
+
+    // // calculate objects intersecting the picking ray
+    var intersects = raycaster.intersectObjects(scene.children, true);
+
     // put animation(s) here
-    box.rotation.x += 0.05;
-    box.rotation.y += 0.01;
+
+    for (let i = 0; i < intersects.length; i++) {
+        // change color on method call
+        if (intersects[i].object.id === sphereID) {
+            intersects[i].object.material.color.set(0xff0000);
+            console.log("hovered")
+        }
+        if (intersects[i].object.name === 'theBox') {
+            box.rotation.x += 0.05;
+            box.rotation.y += 0.01;
+        }
+    }
 
     step += options.speed;
     sphere.position.y = 10 * Math.abs(Math.sin(step));
@@ -184,4 +193,4 @@ var render = function () {
 
 render();
 
-// window.addEventListener('mousemove', onPointerMove);
+window.addEventListener('mousemove', onPointerMove);
