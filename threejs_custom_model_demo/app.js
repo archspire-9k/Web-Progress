@@ -1,12 +1,12 @@
 import * as THREE from 'three';
-import { gsap } from "gsap";
-import { Expo } from 'gsap';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
 import * as dat from 'dat.gui';
 
 var renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
 renderer.setClearColor(0xe5e5e5);
 
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -31,9 +31,9 @@ const options = {
     angle: 0.2,
     penumbra: 0,
     intensity: 1,
-    positionX: 0,
-    positionY: 0,
-    positionZ: 0,
+    positionX: -20,
+    positionY: 30,
+    positionZ: 30,
     top: 0,
     bottom: -12,
     right: 0,
@@ -57,18 +57,41 @@ gui.add(options, "positionX", -30, 30);
 gui.add(options, "positionY", -30, 30);
 gui.add(options, "positionZ", -30, 30);
 
+const spotLight = new THREE.SpotLight();
+spotLight.position.set(6, 20, -6);
+spotLight.castShadow = true;
+scene.add(spotLight);
 
+//Set up shadow properties for the light
+spotLight.shadow.mapSize.width = 512; // default
+spotLight.shadow.mapSize.height = 512; // default
+spotLight.shadow.camera.near = 0.5; // default
+spotLight.shadow.camera.far = 500; // default
+spotLight.shadow.focus = 1; // default
 
+const spotLightHelper = new THREE.SpotLightHelper( spotLight );
+scene.add(spotLightHelper);
 
+const spotLightShadowHelper = new THREE.CameraHelper( spotLight.shadow.camera );
+scene.add(spotLightShadowHelper);
+
+// Optional: Provide a DRACOLoader instance to decode compressed mesh data
+const dracoLoader = new DRACOLoader();
+dracoLoader.setDecoderPath('/examples/jsm/libs/draco/gltf');
 
 const loader = new GLTFLoader();
+loader.setDRACOLoader(dracoLoader);
+loader.setPath('./isometric_office/');
+loader.load('untitled.gltf', function (gltf) {
 
-loader.load(
-    './isometric_office/untitled.gltf',
-    function (gltf) {
-        // gltf.scene.scale.set(0.008, 0.008, 0.008);
-        scene.add(gltf.scene);
-    },
+    scene.add(gltf.scene); 
+    console.log(gltf.scene.receiveShadow);
+    gltf.scene.receiveShadow = true;
+    gltf.scene.castShadow = true;
+
+    render();
+
+},
     undefined,
     // called when loading has errors
     function (error) {
@@ -76,30 +99,7 @@ loader.load(
         console.log('An error happened');
 
     }
-)
-
-// const ambienceLight = new THREE.AmbientLight();
-// ambienceLight.intensity = 0.01;
-// scene.add(ambienceLight);
-
-const directionalLight = new THREE.DirectionalLight(0xFFFFFF, 0.8);
-scene.add(directionalLight);
-directionalLight.position.set(-20, 30, 30);
-directionalLight.castShadow = true;
-
-const directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight, 5);
-scene.add(directionalLightHelper);
-
-const directionalLightShadowHelper = new THREE.CameraHelper(directionalLight.shadow.camera);
-scene.add(directionalLightShadowHelper);
-
-// const spotLight = new THREE.SpotLight();
-// scene.add(spotLight);
-// spotLight.position.set(3, 30, -30);
-// spotLight.castShadow = true;
-
-// const spotLightHelper = new THREE.SpotLightHelper(spotLight);
-// scene.add(spotLightHelper);
+);
 
 //add fog
 // scene.fog = new THREE.Fog(0xffffff, 0, 200);
@@ -133,7 +133,7 @@ window.addEventListener('resize', () => {
 var raycaster = new THREE.Raycaster();
 var pointer = new THREE.Vector2();
 
-function onPointerMove(event) {
+function onPointerClick(event) {
 
     // calculate pointer position in normalized device coordinates
     // (-1 to +1) for both components
@@ -141,9 +141,28 @@ function onPointerMove(event) {
     pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
     pointer.y = - (event.clientY / window.innerHeight) * 2 + 1;
 
+    // update the picking ray with the camera and pointer position
+    raycaster.setFromCamera(pointer, camera);
+
+    // calculate objects intersecting the picking ray
+    var intersects = raycaster.intersectObjects(scene.children, true);
+
+    // put animation(s) here
+
+    for (let i = 0; i < intersects.length; i++) {
+        // change color on method call
+        // intersects[i].object.material.color.set(0xe5e5e5);
+    }
     if (isMouseDown) {
 
     }
+}
+
+function onPointerMove(event) {
+    event.preventDefault();
+    pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
+    pointer.y = - (event.clientY / window.innerHeight) * 2 + 1;
+    spotLight.target.position.set(pointer.x, 0, -pointer.y);   
 }
 
 function onPointerDown() {
@@ -159,35 +178,23 @@ let step = 0;
 var render = function () {
     requestAnimationFrame(render);
 
-    // // update the picking ray with the camera and pointer position
-    raycaster.setFromCamera(pointer, camera);
+    spotLight.angle = options.angle;
+    spotLight.penumbra = options.penumbra;
+    spotLight.intensity = options.intensity;
+    spotLightHelper.update();
+    // directionalLight.intensity = options.intensity;
+    // directionalLight.shadow.camera.bottom = options.bottom;
+    // directionalLight.shadow.camera.top = options.top;
+    // directionalLight.shadow.camera.right = options.right;
+    // directionalLight.shadow.camera.left = options.left;
+    // directionalLight.position.set(options.positionX, options.positionY, options.positionZ)
+    // directionalLightHelper.update();
 
-    // // calculate objects intersecting the picking ray
-    var intersects = raycaster.intersectObjects(scene.children, true);
-
-    // put animation(s) here
-
-    for (let i = 0; i < intersects.length; i++) {
-        // change color on method call
-        intersects[i].object.material.color.set(0xe5e5e5);
-    }
-
-    step += options.speed;
-
-
-    // spotLight.angle = options.angle;
-    // spotLight.penumbra = options.penumbra;
-    // spotLight.intensity = options.intensity;
-    directionalLight.intensity = options.intensity;
-    directionalLight.shadow.camera.bottom = options.bottom;
-    directionalLight.shadow.camera.top = options.top;
-    directionalLight.shadow.camera.right = options.right;
-    directionalLight.shadow.camera.left = options.left;
-    directionalLightHelper.update();
 
     renderer.render(scene, camera);
 }
 
 render();
 
-window.addEventListener('click', onPointerMove);
+window.addEventListener('click', onPointerClick);
+window.addEventListener('mousemove', onPointerMove);
