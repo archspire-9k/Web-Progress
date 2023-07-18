@@ -4,21 +4,15 @@ import { Expo } from 'gsap';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import * as dat from 'dat.gui';
-import nebula from './src/img/nebula.jpg';
-import star from './src/img/stars.jpg';
 
 var renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.shadowMap.enabled = true;
-// renderer.setClearColor(0xffea00);
+renderer.setClearColor(0xe5e5e5);
 
 renderer.setSize(window.innerWidth, window.innerHeight);
 
 document.body.appendChild(renderer.domElement);
 var scene = new THREE.Scene();
-
-// set texture to scene background
-const textureLoader = new THREE.TextureLoader();
-scene.background = textureLoader.load(star);
 
 
 
@@ -36,16 +30,15 @@ const options = {
     speed: 0.01,
     angle: 0.2,
     penumbra: 0,
-    intensity: 1
+    intensity: 1,
+    positionX: 0,
+    positionY: 0,
+    positionZ: 0,
+    top: 0,
+    bottom: -12,
+    right: 0,
+    left: -12
 };
-
-gui.addColor(options, 'sphereColor').onChange(function (e) {
-    sphere.material.color.set(e);
-});
-
-gui.add(options, 'wireframe').onChange(function (e) {
-    sphere.material.wireframe = e;
-});
 
 gui.add(options, "speed", 0, 0.1);
 
@@ -55,72 +48,58 @@ gui.add(options, "penumbra", 0, 1);
 
 gui.add(options, "intensity", 0, 1);
 
-const planeGeometry = new THREE.PlaneGeometry(30, 30);
-const planeMaterial = new THREE.MeshStandardMaterial({ color: 0xFFFFFF, side: THREE.DoubleSide })
-const plane = new THREE.Mesh(planeGeometry, planeMaterial);
-plane.receiveShadow = true;
-scene.add(plane);
-plane.rotation.x = -0.5 * Math.PI;
+gui.add(options, "top", -20, 20);
+gui.add(options, "bottom", -20, 20);
+gui.add(options, "left", -20, 20);
+gui.add(options, "right", -20, 20);
 
-const boxGeometry = new THREE.BoxGeometry(3, 3, 3);
-const boxMaterial = new THREE.MeshStandardMaterial({ color: 0xFFFFF })
-const box = new THREE.Mesh(boxGeometry, boxMaterial);
-box.name = 'theBox';
+gui.add(options, "positionX", -30, 30);
+gui.add(options, "positionY", -30, 30);
+gui.add(options, "positionZ", -30, 30);
 
-scene.add(box);
 
-const sphereGeometry = new THREE.SphereGeometry(4, 60, 60);
-const sphereMaterial = new THREE.MeshStandardMaterial({ color: 0xFFF });
-const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-sphere.castShadow = true;
 
-scene.add(sphere);
-sphere.position.set(3, 10, -13)
 
-const vShader = `
-    void main() {
-        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+
+const loader = new GLTFLoader();
+
+loader.load(
+    './isometric_office/untitled.gltf',
+    function (gltf) {
+        // gltf.scene.scale.set(0.008, 0.008, 0.008);
+        scene.add(gltf.scene);
+    },
+    undefined,
+    // called when loading has errors
+    function (error) {
+
+        console.log('An error happened');
+
     }
-`; 
+)
 
-const fShader = `
-    void main() {
-        gl_FragColor = vec4(1.0, 0.3, 0.1, 1.0);
-    }
-`;
+// const ambienceLight = new THREE.AmbientLight();
+// ambienceLight.intensity = 0.01;
+// scene.add(ambienceLight);
 
-const sphere2Geometry = new THREE.SphereGeometry(4);
-const sphere2Material = new THREE.ShaderMaterial({
-    vertexShader: vShader,
-    fragmentShader: fShader
-});
-const sphere2 = new THREE.Mesh(sphere2Geometry, sphere2Material);
-scene.add(sphere2);
-sphere2.position.set(-15, 10, 10);
+const directionalLight = new THREE.DirectionalLight(0xFFFFFF, 0.8);
+scene.add(directionalLight);
+directionalLight.position.set(-20, 30, 30);
+directionalLight.castShadow = true;
 
-const ambienceLight = new THREE.AmbientLight(0x375243);
-scene.add(ambienceLight);
+const directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight, 5);
+scene.add(directionalLightHelper);
 
-// const directionalLight = new THREE.DirectionalLight(0xFFFFFF, 0.8);
-// scene.add(directionalLight);
-// directionalLight.position.set(40, 30, -90);
-// directionalLight.castShadow = true;
-// directionalLight.shadow.camera.top = 12;
-// directionalLight.shadow.camera.right = 12;
+const directionalLightShadowHelper = new THREE.CameraHelper(directionalLight.shadow.camera);
+scene.add(directionalLightShadowHelper);
 
-// const directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight, 5);
-// scene.add(directionalLightHelper);
+// const spotLight = new THREE.SpotLight();
+// scene.add(spotLight);
+// spotLight.position.set(3, 30, -30);
+// spotLight.castShadow = true;
 
-// const directionalLightShadowHelper = new THREE.CameraHelper(directionalLight.shadow.camera);
-// scene.add(directionalLightShadowHelper);
-
-const spotLight = new THREE.SpotLight();
-scene.add(spotLight);
-spotLight.position.set(3, 30, -30);
-spotLight.castShadow = true;
-
-const spotLightHelper = new THREE.SpotLightHelper(spotLight);
-scene.add(spotLightHelper);
+// const spotLightHelper = new THREE.SpotLightHelper(spotLight);
+// scene.add(spotLightHelper);
 
 //add fog
 // scene.fog = new THREE.Fog(0xffffff, 0, 200);
@@ -176,7 +155,6 @@ function onPointerUp() {
 }
 
 let step = 0;
-const sphereID = sphere.id;
 
 var render = function () {
     requestAnimationFrame(render);
@@ -191,27 +169,25 @@ var render = function () {
 
     for (let i = 0; i < intersects.length; i++) {
         // change color on method call
-        if (intersects[i].object.id === sphereID) {
-            intersects[i].object.material.color.set(0xff0000);
-            console.log("hovered")
-        }
-        if (intersects[i].object.name === 'theBox') {
-            box.rotation.x += 0.05;
-            box.rotation.y += 0.01;
-        }
+        intersects[i].object.material.color.set(0xe5e5e5);
     }
 
     step += options.speed;
-    sphere.position.y = 10 * Math.abs(Math.sin(step));
 
-    spotLight.angle = options.angle;
-    spotLight.penumbra = options.penumbra;
-    spotLight.intensity = options.intensity;
-    spotLightHelper.update();
+
+    // spotLight.angle = options.angle;
+    // spotLight.penumbra = options.penumbra;
+    // spotLight.intensity = options.intensity;
+    directionalLight.intensity = options.intensity;
+    directionalLight.shadow.camera.bottom = options.bottom;
+    directionalLight.shadow.camera.top = options.top;
+    directionalLight.shadow.camera.right = options.right;
+    directionalLight.shadow.camera.left = options.left;
+    directionalLightHelper.update();
 
     renderer.render(scene, camera);
 }
 
 render();
 
-window.addEventListener('mousemove', onPointerMove);
+window.addEventListener('click', onPointerMove);
