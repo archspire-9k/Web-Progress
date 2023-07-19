@@ -116,6 +116,7 @@ controls.minPolarAngle = Math.PI / 3        // prevent top down view
 camera.position.set(options.positionX, options.positionY, options.positionZ);
 controls.update();  
 
+// const spriteController = new SpriteCharac
 let isMouseDown = false;
 
 
