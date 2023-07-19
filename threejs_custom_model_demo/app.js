@@ -1,10 +1,14 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
 import { gsap } from 'gsap';
 import { Expo } from 'gsap';
+
 import * as dat from 'dat.gui';
+
+import { createCamera } from './src/scene'
 
 var renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.shadowMap.enabled = true;
@@ -103,37 +107,7 @@ loader.load('scene.gltf', function (gltf) {
     }
 );
 
-var camera = new THREE.PerspectiveCamera(
-    45,
-    window.innerWidth / window.innerHeight,
-    1,
-    1000
-);
-
-loader.setPath('./sonic_sprite/');
-loader.load('scene.gltf', function (gltf) {
-
-    scene.add(gltf.scene);
-    gltf.scene.scale.set(0.1, 0.1, 0.1);
-
-    render();
-
-},
-    undefined,
-    // called when loading has errors
-    function (error) {
-
-        console.log('An error happened');
-
-    }
-);
-
-var camera = new THREE.PerspectiveCamera(
-    45,
-    window.innerWidth / window.innerHeight,
-    1,
-    1000
-);
+var camera = createCamera();
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
@@ -152,17 +126,6 @@ window.addEventListener('resize', () => {
 
 const tl = gsap.timeline();
 function onPointerClick(event) {
-    // tl.to(camera.position, {
-    //     x: -4, duration: 1.5, onUpdate: function () {
-    //         camera.lookAt(-4, 1.3, 10);
-    //     }
-    // })
-
-    // tl.to(camera.position, {
-    //     y: 1.3, duration: 1.5, onUpdate: function () {
-    //         camera.lookAt(-4, 1.3, 10);
-    //     }
-    // })
 
     tl.to(camera.position, {
         x: -4,
@@ -209,8 +172,6 @@ var render = function () {
     spotLight.penumbra = options.penumbra;
     spotLight.intensity = options.intensity;
     spotLightHelper.update();
-
-    // camera.position.set(options.positionX, options.positionY, options.positionZ);
 
     renderer.render(scene, camera);
 }
