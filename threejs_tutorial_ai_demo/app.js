@@ -51,6 +51,19 @@ vehicle.steering.add(followPathBehavior);
 const entityManager = new YUKA.EntityManager();
 entityManager.add(vehicle);
 
+const position = [];
+for(let i = 0; i < path._waypoints.length; i++) {
+    const waypoint = path._waypoints[i];
+    position.push(waypoint.x, waypoint.y, waypoint.z);
+}
+
+const lineGeometry = new THREE.BufferGeometry();
+lineGeometry.setAttribute('position', new THREE.Float32BufferAttribute(position, 3));
+
+const lineMaterial = new THREE.LineBasicMaterial({ color: 0xffffff });
+const lines = new THREE.LineLoop(lineGeometry, lineMaterial);
+scene.add(lines);
+
 const time = new YUKA.Time();
 
 // trigger renderer size camera aspect upon browser resizing
