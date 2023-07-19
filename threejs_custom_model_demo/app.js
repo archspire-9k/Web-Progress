@@ -87,7 +87,7 @@ loader.setPath('./city/');
 loader.load('scene.gltf', function (gltf) {
 
     scene.add(gltf.scene);
-    gltf.scene.scale.set(0.01, 0.01, 0.01)
+    gltf.scene.scale.set(0.01, 0.01, 0.01);
     gltf.scene.receiveShadow = true;
     gltf.scene.castShadow = true;
 
@@ -192,5 +192,5 @@ var render = function () {
 
 render();
 
-window.addEventListener('mouseup', onPointerClick);
+// window.addEventListener('mouseup', onPointerClick);
 window.addEventListener('pointermove', onPointerMove);
