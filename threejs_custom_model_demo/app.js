@@ -9,6 +9,7 @@ import { Expo } from 'gsap';
 import * as dat from 'dat.gui';
 
 import { createCamera } from './src/scene'
+import { SpriteFlipbook } from './src/sprite/SpriteFlipbook';
 
 var renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.shadowMap.enabled = true;
@@ -112,17 +113,7 @@ let currentTile = 0;
 const tileX = 8;
 const tileY = 8;
 
-const map = new THREE.TextureLoader().load('./sprites/sprite_character_32px.png');
-map.magFilter = THREE.NearestFilter;
-map.repeat.set(1/tileX, 1/tileY);
-map.offset.x = 0.125;
-map.offset.y = 0.875;
-const material = new THREE.SpriteMaterial({ map: map });
-
-const sprite = new THREE.Sprite(material);
-sprite.position.y = 1;
-sprite.scale.set(2.5, 2.5, 2.5);
-scene.add(sprite);
+const flipbook = new SpriteFlipbook('./sprites/sprite_character_32px.png', tileX, tileY, scene);
 
 var camera = createCamera();
 
