@@ -39,7 +39,7 @@ const options = {
     intensity: 1,
     positionX: 0,
     positionY: 20,
-    positionZ: 40,
+    positionZ: -40,
     top: 0,
     bottom: -12,
     right: 0,
@@ -107,6 +107,23 @@ loader.load('scene.gltf', function (gltf) {
     }
 );
 
+// sprite
+let currentTile = 0;
+const tileX = 8;
+const tileY = 8;
+
+const map = new THREE.TextureLoader().load('./sprites/sprite_character_32px.png');
+map.magFilter = THREE.NearestFilter;
+map.repeat.set(1/tileX, 1/tileY);
+map.offset.x = 0.125;
+map.offset.y = 0.875;
+const material = new THREE.SpriteMaterial({ map: map });
+
+const sprite = new THREE.Sprite(material);
+sprite.position.y = 1;
+sprite.scale.set(2.5, 2.5, 2.5);
+scene.add(sprite);
+
 var camera = createCamera();
 
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -114,11 +131,7 @@ controls.maxPolarAngle = Math.PI / 2 - 0.05 // prevent camera below ground
 controls.minPolarAngle = Math.PI / 3        // prevent top down view
 
 camera.position.set(options.positionX, options.positionY, options.positionZ);
-controls.update();  
-
-// const spriteController = new SpriteCharac
-let isMouseDown = false;
-
+controls.update();
 
 const tl = gsap.timeline();
 function onPointerClick(event) {
