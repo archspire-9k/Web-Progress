@@ -112,7 +112,7 @@ var camera = createCamera();
 const controls = new OrbitControls(camera, renderer.domElement);
 
 camera.position.set(options.positionX, options.positionY, options.positionZ);
-controls.update();
+controls.update();  
 
 let isMouseDown = false;
 
