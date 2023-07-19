@@ -114,7 +114,9 @@ const tileX = 8;
 const tileY = 8;
 
 const flipbook = new SpriteFlipbook('./sprites/sprite_character_32px.png', tileX, tileY, scene);
+flipbook.loop([0,1,2,3], 1.5);
 
+const clock = new THREE.Clock();
 var camera = createCamera();
 
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -174,6 +176,9 @@ var render = function () {
     spotLightHelper.update();
 
     renderer.render(scene, camera);
+
+    let deltaTime = clock.getDelta();
+    flipbook.update(deltaTime);
 }
 
 render();
