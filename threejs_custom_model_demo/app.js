@@ -83,13 +83,38 @@ dracoLoader.setDecoderPath('/examples/jsm/libs/draco/gltf');
 
 const loader = new GLTFLoader();
 loader.setDRACOLoader(dracoLoader);
-loader.setPath('./city/');
+loader.setPath('./low_poly_city/');
 loader.load('scene.gltf', function (gltf) {
 
     scene.add(gltf.scene);
     gltf.scene.scale.set(0.01, 0.01, 0.01);
     gltf.scene.receiveShadow = true;
     gltf.scene.castShadow = true;
+
+    render();
+
+},
+    undefined,
+    // called when loading has errors
+    function (error) {
+
+        console.log('An error happened');
+
+    }
+);
+
+var camera = new THREE.PerspectiveCamera(
+    45,
+    window.innerWidth / window.innerHeight,
+    1,
+    1000
+);
+
+loader.setPath('./sonic_sprite/');
+loader.load('scene.gltf', function (gltf) {
+
+    scene.add(gltf.scene);
+    gltf.scene.scale.set(0.1, 0.1, 0.1);
 
     render();
 
