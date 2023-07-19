@@ -110,19 +110,14 @@ loader.load('scene.gltf', function (gltf) {
 var camera = createCamera();
 
 const controls = new OrbitControls(camera, renderer.domElement);
+controls.maxPolarAngle = Math.PI / 2 - 0.05 // prevent camera below ground
+controls.minPolarAngle = Math.PI / 3        // prevent top down view
 
 camera.position.set(options.positionX, options.positionY, options.positionZ);
 controls.update();  
 
 let isMouseDown = false;
 
-// trigger renderer size camera aspect upon browser resizing
-window.addEventListener('resize', () => {
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    camera.aspect = window.innerWidth / window.innerHeight;
-
-    camera.updateProjectionMatrix();
-})
 
 const tl = gsap.timeline();
 function onPointerClick(event) {
@@ -180,3 +175,12 @@ render();
 
 // window.addEventListener('mouseup', onPointerClick);
 window.addEventListener('pointermove', onPointerMove);
+
+
+// trigger renderer size camera aspect upon browser resizing
+window.addEventListener('resize', () => {
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    camera.aspect = window.innerWidth / window.innerHeight;
+
+    camera.updateProjectionMatrix();
+})
