@@ -30,7 +30,7 @@ const options = {
     sphereColor: '#ffea00',
     wireframe: false,
     speed: 0.01,
-    angle: 0.2,
+    angle: 1,
     penumbra: 0,
     intensity: 1,
     positionX: 0,
@@ -60,7 +60,7 @@ gui.add(options, "positionY", -100, 100);
 gui.add(options, "positionZ", -100, 100);
 
 const spotLight = new THREE.SpotLight();
-spotLight.position.set(-3, 20, 3);
+spotLight.position.set(-3, 40, 3);
 spotLight.castShadow = true;
 scene.add(spotLight);
 
