@@ -83,10 +83,11 @@ dracoLoader.setDecoderPath('/examples/jsm/libs/draco/gltf');
 
 const loader = new GLTFLoader();
 loader.setDRACOLoader(dracoLoader);
-loader.setPath('./isometric_office/');
-loader.load('untitled.gltf', function (gltf) {
+loader.setPath('./city/');
+loader.load('scene.gltf', function (gltf) {
 
     scene.add(gltf.scene);
+    gltf.scene.scale.set(0.01, 0.01, 0.01)
     gltf.scene.receiveShadow = true;
     gltf.scene.castShadow = true;
 
