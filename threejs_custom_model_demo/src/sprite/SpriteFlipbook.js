@@ -1,12 +1,12 @@
 import * as THREE from 'three';
 
 export class SpriteFlipbook {
-    private tileX = 0;
-    private tileY = 0;
-    private currentTile = 0;
+    tileX = 0;
+    tileY = 0;
+    currentTile = 0;
 
-    private map;
-    private sprite;
+    map;
+    sprite;
 
     constructor(spriteTexture, tileX, tileY, scene) {
         this.map = new THREE.TextureLoader().load(spriteTexture);
@@ -24,7 +24,7 @@ export class SpriteFlipbook {
 
     }
 
-    public update(delta) {
+    update(delta) {
         const offsetX = (this.currentTile % this.tileX) / this.tileX;
         const offsetY = (this.tileY - Math.floor(this.currentTile / this.tileY) - 1) / this.tileY;
 
