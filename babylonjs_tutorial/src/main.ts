@@ -7,9 +7,10 @@ const canvas = document.getElementById('renderCanvas') as HTMLCanvasElement;
 const engine = new BABYLON.Engine(canvas);
 
 const scene = createScene(engine);
+scene.ambientColor = BABYLON.Color3.FromInts(238, 237, 171);
 scene.clearColor = BABYLON.Color4.FromHexString('#868990');
 
-scene.createDefaultLight();
+// scene.createDefaultLight();
 
 const camera = new BABYLON.ArcRotateCamera('camera', 0, Math.PI / 2, 8, new BABYLON.Vector3(0, 0.5, 0), scene);
 camera.attachControl(true);
@@ -21,7 +22,8 @@ sphere.position.set(0, 0.5, 0);
 
 const sphereMaterial = new BABYLON.StandardMaterial('sphereMaterial', scene);
 
-sphereMaterial.diffuseColor = BABYLON.Color3.FromInts(238, 237, 171);
+
+sphereMaterial.ambientColor = BABYLON.Color3.FromInts(238, 237, 171);
 
 sphere.material = sphereMaterial;
 
