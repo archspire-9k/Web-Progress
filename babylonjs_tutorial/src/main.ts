@@ -9,10 +9,9 @@ const engine = new BABYLON.Engine(canvas);
 const scene = createScene(engine);
 scene.clearColor = new BABYLON.Color4(0, 0, 0, 255);
 
-// const light = BABYLON.
-scene.createDefaultEnvironment();
+scene.createDefaultLight();
 
-const camera = new BABYLON.ArcRotateCamera('camera', 0, Math.PI/2, 8, new BABYLON.Vector3(0, 0.5, 0), scene);
+const camera = new BABYLON.ArcRotateCamera('camera', 0, Math.PI / 2, 8, new BABYLON.Vector3(0, 0.5, 0), scene);
 camera.attachControl(true);
 camera.inputs.addMouseWheel();
 
@@ -24,8 +23,8 @@ const sphereMaterial = new BABYLON.PBRMaterial('sphereMaterial', scene);
 sphereMaterial.roughness = 0;
 sphereMaterial.metallic = 0;
 sphereMaterial.subSurface.isRefractionEnabled = true;
-sphereMaterial.subSurface.indexOfRefraction = 1.5;
-sphereMaterial.subSurface.tintColor = new BABYLON.Color3(239, 239, 0);
+// sphereMaterial.subSurface.indexOfRefraction = 10;
+sphereMaterial.subSurface.tintColor = BABYLON.Color3.FromInts(239, 239, 171);
 
 sphere.material = sphereMaterial;
 
@@ -34,8 +33,9 @@ sphere.material = sphereMaterial;
 const ground = BABYLON.MeshBuilder.CreateGroundFromHeightMap("ground", "./src/assets/img/waves.png",
     { width: 5, height: 5, subdivisions: 50 }, scene);
 
-ground.material = new BABYLON.StandardMaterial("groundMaterial", scene);
-
+var groundMaterial = new BABYLON.StandardMaterial("groundMaterial", scene);
+groundMaterial.diffuseColor = BABYLON.Color3.FromInts(42, 50, 61);
+ground.material = groundMaterial;
 engine.runRenderLoop(() => {
     scene.render();
 });
