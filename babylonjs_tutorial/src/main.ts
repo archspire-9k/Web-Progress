@@ -8,24 +8,23 @@ const engine = new BABYLON.Engine(canvas);
 
 const scene = createScene(engine);
 
-scene.createDefaultCameraOrLight(true, false, true);
-// // Creates and positions a free camera
-// const camera = new BABYLON.FreeCamera("camera1",
-//     new BABYLON.Vector3(0, 5, -10), scene);
-// // Targets the camera to scene origin
-// camera.setTarget(BABYLON.Vector3.Zero());
-// // This attaches the camera to the canvas
-// camera.attachControl(canvas, true);
+scene.createDefaultLight();
+
+const camera = new BABYLON.UniversalCamera('camera', new BABYLON.Vector3(0, 3, -10), scene);
+camera.attachControl(true);
+camera.inputs.addMouseWheel();
+camera.setTarget(BABYLON.Vector3.Zero());
 
 // sphere mesh
 const sphere = BABYLON.MeshBuilder.CreateSphere('sphere', {diameter: 1, segments: 32}, scene);
+sphere.position.set(0, 2, 2);
 
 // Built-in 'ground' shape.
-const ground = BABYLON.MeshBuilder.CreateGround("ground", 
-{width: 6, height: 6, subdivisions: 30}, scene);
+const ground = BABYLON.MeshBuilder.CreateGroundFromHeightMap("ground", "./src/assets/img/heightmap.png",
+{width: 6, height: 6, subdivisions: 50}, scene);
 
 ground.material = new BABYLON.StandardMaterial("groundMaterial" , scene);
-ground.material.wireframe = true;
+// ground.material.wireframe = true;
 
 engine.runRenderLoop(() => {
     scene.render();
