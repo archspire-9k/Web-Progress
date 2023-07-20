@@ -7,8 +7,5 @@ export default function createScene(engine: BABYLON.Engine) {
     const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
     light.intensity = 0.7;
 
-    // sphere mesh
-    const sphere = BABYLON.MeshBuilder.CreateSphere('sphere', {diameter: 2, segments: 32}, scene);
-
     return scene;
 }
