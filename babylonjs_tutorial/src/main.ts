@@ -7,10 +7,12 @@ const canvas = document.getElementById('renderCanvas') as HTMLCanvasElement;
 const engine = new BABYLON.Engine(canvas);
 
 const scene = createScene(engine);
-scene.ambientColor = BABYLON.Color3.FromInts(238, 237, 171);
 scene.clearColor = BABYLON.Color4.FromHexString('#868990');
 
-// scene.createDefaultLight();
+var lightRed = new BABYLON.PointLight("Light", new BABYLON.Vector3(0, 0.5, 0), scene);
+lightRed.diffuse = BABYLON.Color3.FromHexString('#eb4225');
+lightRed.specular = new BABYLON.Color3(0, 0, 0);
+
 
 const camera = new BABYLON.ArcRotateCamera('camera', 0, Math.PI / 2, 8, new BABYLON.Vector3(0, 0.5, 0), scene);
 camera.attachControl(true);
@@ -21,20 +23,19 @@ const sphere = BABYLON.MeshBuilder.CreateSphere('sphere', { diameter: 1, segment
 sphere.position.set(0, 0.5, 0);
 
 const sphereMaterial = new BABYLON.StandardMaterial('sphereMaterial', scene);
-
-
-sphereMaterial.ambientColor = BABYLON.Color3.FromInts(238, 237, 171);
+sphereMaterial.diffuseColor = BABYLON.Color3.FromInts(238, 237, 171);
 
 sphere.material = sphereMaterial;
 
 
 // Built-in 'ground' shape.
 const ground = BABYLON.MeshBuilder.CreateGroundFromHeightMap("ground", "./src/assets/img/waves.png",
-    { width: 5, height: 5, subdivisions: 50 }, scene);
+    { width: 5, height: 5, subdivisions: 100 }, scene);
 
 var groundMaterial = new BABYLON.StandardMaterial("groundMaterial", scene);
 groundMaterial.diffuseColor = BABYLON.Color3.FromInts(42, 50, 61);
 ground.material = groundMaterial;
+
 engine.runRenderLoop(() => {
     scene.render();
 });
