@@ -8,6 +8,9 @@ const engine = new Engine(canvas);
 
 const scene = createScene(engine);
 
+// enum for states
+enum State { START = 0, GAME = 1, LOSE = 2, CUTSCENE = 3 };
+
 // render meshes here
 // TODO: change this to a function
 const box = MeshBuilder.CreateBox("box", { size: 0.25 }, scene)
@@ -15,10 +18,10 @@ const boxMaterial = new StandardMaterial('boxMaterial', scene);
 boxMaterial.diffuseColor = Color3.Gray();
 box.material = boxMaterial;
 
+// render light here
 const targetLight = new PointLight("light", new Vector3(0, 0.5, 0), scene);
 
 const utilLayer = new UtilityLayerRenderer(scene);
-
 const lightGizmo: LightGizmo = new LightGizmo(utilLayer);
 lightGizmo.light = targetLight;
 
