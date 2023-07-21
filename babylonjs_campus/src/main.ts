@@ -47,9 +47,12 @@ class App {
             }
         });
 
+        this._engine.runRenderLoop(() => {
+            this._scene.render();
+        });
+        
         // implement main logic here
         this._mainLogic();
-        console.log(this._scene);
     }
 
     private _mainLogic() {
@@ -69,9 +72,6 @@ class App {
         const lightGizmo: LightGizmo = new LightGizmo(utilLayer);
         lightGizmo.light = light1;
 
-        this._engine.runRenderLoop(() => {
-            this._scene.render();
-        });
     }
 }
 
