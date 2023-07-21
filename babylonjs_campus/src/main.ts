@@ -1,12 +1,10 @@
-import { Color3, Color4, Engine, FreeCamera, HemisphericLight, LightGizmo, MeshBuilder, PointLight, Scene, StandardMaterial, UtilityLayerRenderer, Vector3 } from '@babylonjs/core';
+import { Color3, Engine, HemisphericLight, LightGizmo, MeshBuilder, Scene, StandardMaterial, UtilityLayerRenderer, Vector3 } from '@babylonjs/core';
 import "@babylonjs/loaders/glTF";
 import "@babylonjs/core/Debug/debugLayer";
 import "@babylonjs/inspector";
 
-import createScene from './createScene';
-
 import State from './stateMachines/State';
-import _goToStart from './stateMachines/goToStart';
+import _goToStart from './stateMachines/Start';
 
 class App {
     // General Entire Application

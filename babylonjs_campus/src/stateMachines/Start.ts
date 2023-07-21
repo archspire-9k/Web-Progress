@@ -27,6 +27,13 @@ export default async function _goToStart(engine: Engine, scene: Scene) {
     startBtn.verticalAlignment = Control.VERTICAL_ALIGNMENT_BOTTOM;
     guiMenu.addControl(startBtn);
 
+    // navigate to cutscene
+    startBtn.onPointerDownObservable.add(() => {
+        this._goToCutscene();
+        // remove scene
+        scene.detachControl();
+    });
+
     await newScene.whenReadyAsync();
     engine.hideLoadingUI();
 
