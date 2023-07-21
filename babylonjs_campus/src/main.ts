@@ -1,4 +1,7 @@
 import { Color3, Engine, HemisphericLight, LightGizmo, MeshBuilder, PointLight, StandardMaterial, UtilityLayerRenderer, Vector3 } from '@babylonjs/core';
+import "@babylonjs/loaders/glTF";
+import "@babylonjs/core/Debug/debugLayer";
+import "@babylonjs/inspector";
 
 import createScene from './createScene';
 
@@ -33,4 +36,16 @@ engine.runRenderLoop(() => {
 // Watch for browser/canvas resize events
 window.addEventListener("resize", function () {
     engine.resize();
+});
+
+// hide/show the Inspector
+window.addEventListener("keydown", (ev) => {
+    // Shift+Ctrl+Alt+I
+    if (ev.shiftKey && ev.ctrlKey && ev.altKey && ev.key === "I") {
+        if (scene.debugLayer.isVisible()) {
+            scene.debugLayer.hide();
+        } else {
+            scene.debugLayer.show();
+        }
+    }
 });
