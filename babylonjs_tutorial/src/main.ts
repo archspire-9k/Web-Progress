@@ -7,7 +7,7 @@ const canvas = document.getElementById('renderCanvas') as HTMLCanvasElement;
 const engine = new BABYLON.Engine(canvas);
 
 const scene = createScene(engine);
-scene.clearColor = BABYLON.Color4.FromHexString('#868990');
+scene.clearColor = BABYLON.Color4.FromHexString('#cdd1dd');
 
 const lightRed = new BABYLON.PointLight("Light", new BABYLON.Vector3(0, 0.5, 0), scene);
 lightRed.diffuse = BABYLON.Color3.FromHexString('#eb4225');
@@ -16,6 +16,14 @@ lightRed.specular = new BABYLON.Color3(0, 0, 0);
 const camera = new BABYLON.ArcRotateCamera('camera', 0, Math.PI / 2, 8, new BABYLON.Vector3(0, 0.5, 0), scene);
 camera.attachControl(true);
 camera.inputs.addMouseWheel();
+
+const env = {} as BABYLON.CubeTexture;
+// add in IBL with linked environment
+env.lighting = BABYLON.CubeTexture.CreateFromPrefilteredData("https://patrickryanms.github.io/BabylonJStextures/Demos/waterRefraction/assets/env/kloofendal_pureSky.env", scene);
+env.lighting.name = "sky";
+env.lighting.gammaSpace = false;
+env.lighting.rotationY = 4.0823;
+scene.environmentTexture = env.lighting;
 
 // sphere mesh
 const sphere = BABYLON.MeshBuilder.CreateSphere('sphere', { diameter: 1, segments: 64 }, scene);
