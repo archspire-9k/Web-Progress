@@ -1,15 +1,12 @@
-import { Color3, Engine, HemisphericLight, LightGizmo, MeshBuilder, PointLight, Scene, StandardMaterial, UtilityLayerRenderer, Vector3 } from '@babylonjs/core';
+import { Color3, Color4, Engine, FreeCamera, HemisphericLight, LightGizmo, MeshBuilder, PointLight, Scene, StandardMaterial, UtilityLayerRenderer, Vector3 } from '@babylonjs/core';
 import "@babylonjs/loaders/glTF";
 import "@babylonjs/core/Debug/debugLayer";
 import "@babylonjs/inspector";
 
 import createScene from './createScene';
 
-
-
-
-// enum for states
-enum State { START = 0, GAME = 1, LOSE = 2, CUTSCENE = 3 };
+import State from './stateMachines/State';
+import _goToStart from './stateMachines/goToStart';
 
 class App {
     // General Entire Application
@@ -47,15 +44,21 @@ class App {
             }
         });
 
-        this._engine.runRenderLoop(() => {
-            this._scene.render();
-        });
-        
         // implement main logic here
         this._mainLogic();
     }
 
-    private _mainLogic() {
+    private async _mainLogic() {
+        //get the state and scene from start state
+        await _goToStart(this._engine, this._scene)
+            .then(result => {
+                this._scene = result.scene;
+                this._state = result.state;
+            });
+
+        this._engine.runRenderLoop(() => {
+            this._scene.render();
+        });
 
         // render meshes here
         // TODO: change this to a function
