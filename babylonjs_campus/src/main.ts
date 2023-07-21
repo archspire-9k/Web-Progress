@@ -25,7 +25,7 @@ class App {
     constructor() {
         this._canvas = document.getElementById('renderCanvas') as HTMLCanvasElement;
         this._engine = new Engine(this._canvas);
-        this._scene = createScene(this._engine);
+        this._scene = new Scene(this._engine);
 
         // Watch for browser/canvas resize events
         window.addEventListener("resize", () => {
