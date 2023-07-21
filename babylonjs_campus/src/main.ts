@@ -48,7 +48,7 @@ class App {
         this._mainLogic();
     }
 
-    private async _mainLogic() {
+    private async _mainLogic(): Promise<void> {
         //get the state and scene from start state
         await _goToStart(this._engine, this._scene)
             .then(result => {
@@ -57,7 +57,32 @@ class App {
             });
 
         this._engine.runRenderLoop(() => {
-            this._scene.render();
+            // this._scene.render();
+            switch (this._state) {
+                case State.START:
+                    this._scene.render();
+                    break;
+                case State.CUTSCENE:
+                    this._scene.render();
+                    break;
+                // TODO: Implement Game state later
+                // case State.GAME:
+                //     //if 240seconds/ 4mins have have passed, go to the lose state
+                //     if (this._ui.time >= 240 && !this._player.win) {
+                //         this._goToLose();
+                //         this._ui.stopTimer();
+                //     }
+                //     if (this._ui.quit) {
+                //         this._goToStart();
+                //         this._ui.quit = false;
+                //     }
+                //     this._scene.render();
+                //     break;
+                case State.LOSE:
+                    this._scene.render();
+                    break;
+                default: break;
+            }
         });
 
         // render meshes here
