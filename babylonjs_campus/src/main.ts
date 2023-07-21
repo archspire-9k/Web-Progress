@@ -57,7 +57,6 @@ class App {
             });
 
         this._engine.runRenderLoop(() => {
-            // this._scene.render();
             switch (this._state) {
                 case State.START:
                     this._scene.render();
