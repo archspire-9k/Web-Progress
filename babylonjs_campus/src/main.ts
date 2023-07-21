@@ -8,13 +8,11 @@ const engine = new Engine(canvas);
 
 const scene = createScene(engine);
 
-// const camera = new ArcRotateCamera('camera', 0, Math.PI / 2, 8, new Vector3(0, 0.5, 0), scene);
-
 // render meshes here
+// TODO: change this to a function
 const box = MeshBuilder.CreateBox("box", { size: 0.25 }, scene)
 const boxMaterial = new StandardMaterial('boxMaterial', scene);
 boxMaterial.diffuseColor = Color3.Gray();
-// boxMaterial.emissiveColor = Color3.Gray();
 box.material = boxMaterial;
 
 const targetLight = new PointLight("light", new Vector3(0, 0.5, 0), scene);
