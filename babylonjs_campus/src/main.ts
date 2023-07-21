@@ -1,4 +1,4 @@
-import { Color3, Engine, LightGizmo, MeshBuilder, PointLight, StandardMaterial, UtilityLayerRenderer, Vector3 } from '@babylonjs/core';
+import { Color3, Engine, HemisphericLight, LightGizmo, MeshBuilder, PointLight, StandardMaterial, UtilityLayerRenderer, Vector3 } from '@babylonjs/core';
 
 import createScene from './createScene';
 
@@ -19,11 +19,12 @@ boxMaterial.diffuseColor = Color3.Gray();
 box.material = boxMaterial;
 
 // render light here
-const targetLight = new PointLight("light", new Vector3(0, 0.5, 0), scene);
+// const targetLight = new PointLight("light", new Vector3(0, 0.5, 0), scene);
+const light1: HemisphericLight = new HemisphericLight("light1", new Vector3(1, 1, 0), scene);
 
 const utilLayer = new UtilityLayerRenderer(scene);
 const lightGizmo: LightGizmo = new LightGizmo(utilLayer);
-lightGizmo.light = targetLight;
+lightGizmo.light = light1;
 
 engine.runRenderLoop(() => {
     scene.render();
