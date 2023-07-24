@@ -1,6 +1,7 @@
 import { Color4, Engine, Scene, UniversalCamera, Vector3 } from "@babylonjs/core";
+import State from "./State";
 
-export default async function _goToCutscene(engine: Engine, scene: Scene) {
+export default async function _goToCutscene(engine: Engine, scene: Scene, setScene: Function, setState: Function) {
     engine.displayLoadingUI();
 
     //--SETUP SCENE--
@@ -16,11 +17,7 @@ export default async function _goToCutscene(engine: Engine, scene: Scene) {
 
     //lastly set the current state to the start state and set the scene to the start scene
     scene.dispose();
-
-
-    return {
-        engine: engine,
-        scene: scene
-    }
+    setScene(_cutScene);
+    setState(State.CUTSCENE);
 
 }

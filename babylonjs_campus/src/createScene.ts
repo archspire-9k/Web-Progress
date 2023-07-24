@@ -1,4 +1,4 @@
-import { Color3, GizmoManager, Scene, StandardMaterial } from '@babylonjs/core';
+import { Color3, GizmoManager, MeshBuilder, Scene, StandardMaterial } from '@babylonjs/core';
 import { Engine } from '@babylonjs/core';
 import { ArcRotateCamera } from '@babylonjs/core';
 import { Vector3, Color4 } from '@babylonjs/core';
@@ -14,7 +14,7 @@ export default function createScene(engine: Engine) {
     var camera: ArcRotateCamera = new ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 2, 2, Vector3.Zero(), scene);
     camera.attachControl(true);
     camera.inputs.addMouseWheel();
-
+        
     // add events here
     scene.onPointerDown = function rayCast() {
         const hit = scene.pick(scene.pointerX, scene.pointerY);

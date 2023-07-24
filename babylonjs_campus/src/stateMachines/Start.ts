@@ -6,7 +6,7 @@ import { Control } from "@babylonjs/gui/2D/controls/control";
 import { Button } from "@babylonjs/gui/2D/controls/button";
 import _goToCutscene from "./Cutscene";
 
-export default async function _goToStart(engine: Engine, scene: Scene) {
+export default async function _goToStart(engine: Engine, scene: Scene, setScene: Function, setState: Function) {
     engine.displayLoadingUI();
 
     //--SCENE SETUP--
@@ -30,7 +30,7 @@ export default async function _goToStart(engine: Engine, scene: Scene) {
 
     // navigate to cutscene
     startBtn.onPointerDownObservable.add(() => {
-        _goToCutscene(engine, scene);
+        _goToCutscene(engine, scene, setScene, setState);
         // remove scene
         scene.detachControl();
     });
@@ -40,9 +40,7 @@ export default async function _goToStart(engine: Engine, scene: Scene) {
 
     //lastly set the current state to the start state and set the scene to the start scene
     scene.dispose();
+    setScene(newScene);
+    setState(State.START);
 
-    return {
-        scene: newScene,
-        state: State.START
-    }
 }

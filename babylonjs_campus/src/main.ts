@@ -46,13 +46,19 @@ class App {
         this._mainLogic();
     }
 
+
     private async _mainLogic(): Promise<void> {
+        let setState = (state: State) => {
+            this._state = state;
+        }
+
+        let setScene = (scene: Scene) => {
+            this._scene = scene;
+        }
+
         //get the state and scene from start state
-        await _goToStart(this._engine, this._scene)
-            .then(result => {
-                this._scene = result.scene;
-                this._state = result.state;
-            });
+        await _goToStart(this._engine, this._scene, setScene, setState);
+
 
         this._engine.runRenderLoop(() => {
             switch (this._state) {
