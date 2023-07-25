@@ -1,6 +1,5 @@
-import { BackgroundMaterial, Color3, Engine, HemisphericLight, MeshBuilder, Scene, Sprite, SpriteManager, StandardMaterial, Texture, Vector3 } from "@babylonjs/core";
+import { ArcRotateCamera, BackgroundMaterial, Color3, Color4, Engine, HemisphericLight, MeshBuilder, Scene, Sprite, SpriteManager, StandardMaterial, Texture, Vector3 } from "@babylonjs/core";
 import { AdvancedDynamicTexture } from "@babylonjs/gui/2D/advancedDynamicTexture";
-import createScene from "../createScene";
 import State from "./State";
 import { Control } from "@babylonjs/gui/2D/controls/control";
 import { Button } from "@babylonjs/gui/2D/controls/button";
@@ -12,7 +11,25 @@ export default async function _goToStart(engine: Engine, scene: Scene, setScene:
     //--SCENE SETUP--
     //dont detect any inputs from this ui while the game is loading
     scene.detachControl();
-    let newScene = createScene(engine);
+    const newScene = new Scene(engine);
+
+    newScene.clearColor = Color4.FromHexString('#cdd1dd');
+
+    var camera: ArcRotateCamera = new ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 3, 2, Vector3.Zero(), newScene);
+    camera.attachControl(true);
+    camera.inputs.addMouseWheel();
+
+    camera.wheelPrecision = 10;
+    
+    // add events here
+    // scene.onPointerDown = function rayCast() {
+    //     const hit = scene.pick(scene.pointerX, scene.pointerY);
+
+    //     if (hit.pickedMesh?.name === 'box' && hit.pickedMesh.material instanceof StandardMaterial) {
+    //         hit.pickedMesh.material.diffuseColor = Color3.Red();
+    //     }
+    // }
+
 
     //--GUI--
     const guiMenu = AdvancedDynamicTexture.CreateFullscreenUI("UI");
