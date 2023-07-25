@@ -16,13 +16,13 @@ export default function createScene(engine: Engine) {
     camera.inputs.addMouseWheel();
         
     // add events here
-    scene.onPointerDown = function rayCast() {
-        const hit = scene.pick(scene.pointerX, scene.pointerY);
+    // scene.onPointerDown = function rayCast() {
+    //     const hit = scene.pick(scene.pointerX, scene.pointerY);
 
-        if (hit.pickedMesh?.name === 'box' && hit.pickedMesh.material instanceof StandardMaterial) {
-            hit.pickedMesh.material.diffuseColor = Color3.Red();
-        }
-    }
+    //     if (hit.pickedMesh?.name === 'box' && hit.pickedMesh.material instanceof StandardMaterial) {
+    //         hit.pickedMesh.material.diffuseColor = Color3.Red();
+    //     }
+    // }
 
     return scene;
 }
