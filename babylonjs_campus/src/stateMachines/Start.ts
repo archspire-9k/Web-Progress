@@ -4,7 +4,7 @@ import createScene from "../createScene";
 import State from "./State";
 import { Control } from "@babylonjs/gui/2D/controls/control";
 import { Button } from "@babylonjs/gui/2D/controls/button";
-import _goToCutscene from "./Quad";
+import _goToQuad from "./Quad";
 
 export default async function _goToStart(engine: Engine, scene: Scene, setScene: Function, setState: Function) {
     engine.displayLoadingUI();
@@ -30,9 +30,7 @@ export default async function _goToStart(engine: Engine, scene: Scene, setScene:
 
     // navigate to cutscene
     startBtn.onPointerDownObservable.add(() => {
-        _goToCutscene(engine, scene, setScene, setState);
-
-
+        _goToQuad(engine, scene, setScene, setState);
     });
 
     // render meshes here
