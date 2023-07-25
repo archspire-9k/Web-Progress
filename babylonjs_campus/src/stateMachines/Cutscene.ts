@@ -8,8 +8,8 @@ export default async function _goToCutscene(engine: Engine, scene: Scene, setSce
     //dont detect any inputs from this ui while the game is loading
     scene.detachControl();
     let _cutScene = new Scene(engine);
-    // let camera = new UniversalCamera("camera1", Vector3.Zero(), _cutScene);
-    // camera.setTarget(Vector3.Zero());
+    let camera = new UniversalCamera("camera1", Vector3.Zero(), _cutScene);
+    camera.setTarget(Vector3.Zero());
     _cutScene.clearColor = new Color4(0, 0, 100, 1);
 
     // SceneLoader.ImportMeshAsync("", "./low_poly_city/", "scene.gltf", _cutScene);

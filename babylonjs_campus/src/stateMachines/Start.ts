@@ -1,4 +1,4 @@
-import { Color3, Engine, MeshBuilder, Scene, StandardMaterial } from "@babylonjs/core";
+import { Color3, Engine, HemisphericLight, MeshBuilder, Scene, StandardMaterial, Vector3 } from "@babylonjs/core";
 import { AdvancedDynamicTexture } from "@babylonjs/gui/2D/advancedDynamicTexture";
 import createScene from "../createScene";
 import State from "./State";
@@ -31,8 +31,8 @@ export default async function _goToStart(engine: Engine, scene: Scene, setScene:
     // navigate to cutscene
     startBtn.onPointerDownObservable.add(() => {
         _goToCutscene(engine, scene, setScene, setState);
-        // remove scene
-        scene.detachControl();
+
+
     });
 
     // render meshes here
@@ -41,6 +41,10 @@ export default async function _goToStart(engine: Engine, scene: Scene, setScene:
     const boxMaterial = new StandardMaterial('boxMaterial', newScene);
     boxMaterial.diffuseColor = Color3.Gray();
     box.material = boxMaterial;
+
+    // render light here
+    // const targetLight = new PointLight("light", new Vector3(0, 0.5, 0), scene);
+    const light1: HemisphericLight = new HemisphericLight("light1", new Vector3(1, 1, 0), newScene);
 
     await newScene.whenReadyAsync();
     engine.hideLoadingUI();
