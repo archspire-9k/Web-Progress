@@ -1,4 +1,4 @@
-import { Color3, Engine, HemisphericLight, MeshBuilder, Scene, StandardMaterial, Vector3 } from "@babylonjs/core";
+import { BackgroundMaterial, Color3, Engine, HemisphericLight, MeshBuilder, Scene, Sprite, SpriteManager, StandardMaterial, Texture, Vector3 } from "@babylonjs/core";
 import { AdvancedDynamicTexture } from "@babylonjs/gui/2D/advancedDynamicTexture";
 import createScene from "../createScene";
 import State from "./State";
@@ -35,13 +35,18 @@ export default async function _goToStart(engine: Engine, scene: Scene, setScene:
 
     // render meshes here
     // TODO: change this to a function
-    const box = MeshBuilder.CreateBox("box", { size: 0.25 }, newScene)
-    const boxMaterial = new StandardMaterial('boxMaterial', newScene);
-    boxMaterial.diffuseColor = Color3.Gray();
-    box.material = boxMaterial;
+    const ground = MeshBuilder.CreateGround('ground', { width: 30, height: 30, subdivisions: 5 }, newScene);
+    const groundMaterial = new StandardMaterial('', newScene);
+    groundMaterial.diffuseColor = Color3.Green();
+    ground.material = groundMaterial;
+
+    const characterManager = new SpriteManager('character', "./sprites/knight_idle.png", 1, 42, newScene);
+    characterManager.pixelPerfect = true;
+    const character = new Sprite("player", characterManager);
+    character.position.set(0, 1, 0);
+    character.playAnimation(0, 3, true, 375);
 
     // render light here
-    // const targetLight = new PointLight("light", new Vector3(0, 0.5, 0), scene);
     const light1: HemisphericLight = new HemisphericLight("light1", new Vector3(1, 1, 0), newScene);
 
     await newScene.whenReadyAsync();
