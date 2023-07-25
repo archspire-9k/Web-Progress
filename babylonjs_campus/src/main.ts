@@ -81,7 +81,7 @@ class App {
                 //     }
                 //     this._scene.render();
                 //     break;
-                case State.LOSE:
+                case State.LECTUREHALL:
                     this._scene.render();
                     break;
                 default: break;
