@@ -1,5 +1,9 @@
 import { ArcRotateCamera, Color3, Color4, Engine, HemisphericLight, MeshBuilder, Scene, SceneLoader, StandardMaterial, UniversalCamera, Vector3 } from "@babylonjs/core";
 import State from "./State";
+import { AdvancedDynamicTexture } from "@babylonjs/gui/2D/advancedDynamicTexture";
+import { Control } from "@babylonjs/gui/2D/controls/control";
+import { Button } from "@babylonjs/gui/2D/controls/button";
+import _goToGame from "./Game";
 
 export default async function _goToLectureHall(engine: Engine, scene: Scene, setScene: Function, setState: Function) {
     engine.displayLoadingUI();
@@ -13,6 +17,25 @@ export default async function _goToLectureHall(engine: Engine, scene: Scene, set
     camera.inputs.addMouseWheel();
     _cutScene.clearColor = new Color4(0, 100, 0, 1);
 
+     //--GUI--
+     const guiMenu = AdvancedDynamicTexture.CreateFullscreenUI("UI");
+     guiMenu.idealHeight = 720;
+ 
+     //create a simple button
+     const gameBtn = Button.CreateSimpleButton("game", "to game");
+     gameBtn.width = 0.2;
+     gameBtn.height = "40px";
+     gameBtn.color = "white";
+     gameBtn.top = "-14px";
+     gameBtn.thickness = 0;
+     gameBtn.verticalAlignment = Control.VERTICAL_ALIGNMENT_BOTTOM;
+     guiMenu.addControl(gameBtn);
+ 
+     // navigate to cutscene
+     gameBtn.onPointerDownObservable.add(() => {
+         _goToGame(engine, scene, setScene, setState);
+     });
+     
     // render light here
     const light1: HemisphericLight = new HemisphericLight("light1", new Vector3(1, 1, 0), _cutScene);
 
