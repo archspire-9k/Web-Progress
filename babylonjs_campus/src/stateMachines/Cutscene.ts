@@ -1,4 +1,4 @@
-import { Color3, Color4, Engine, HemisphericLight, MeshBuilder, Scene, SceneLoader, StandardMaterial, UniversalCamera, Vector3 } from "@babylonjs/core";
+import { ArcRotateCamera, Color3, Color4, Engine, HemisphericLight, MeshBuilder, Scene, SceneLoader, StandardMaterial, UniversalCamera, Vector3 } from "@babylonjs/core";
 import State from "./State";
 
 export default async function _goToCutscene(engine: Engine, scene: Scene, setScene: Function, setState: Function) {
@@ -8,8 +8,9 @@ export default async function _goToCutscene(engine: Engine, scene: Scene, setSce
     //dont detect any inputs from this ui while the game is loading
     scene.detachControl();
     let _cutScene = new Scene(engine);
-    let camera = new UniversalCamera("camera1", Vector3.Zero(), _cutScene);
-    camera.setTarget(Vector3.Zero());
+    var camera: ArcRotateCamera = new ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 2, 2, Vector3.Zero(), _cutScene);
+    camera.attachControl(true);
+    camera.inputs.addMouseWheel();
     _cutScene.clearColor = new Color4(0, 0, 100, 1);
 
     // render light here
