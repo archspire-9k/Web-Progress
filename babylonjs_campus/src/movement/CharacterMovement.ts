@@ -27,7 +27,7 @@ export default class CharacterMovement {
 
         scene.actionManager.registerAction(
             new ExecuteCodeAction(ActionManager.OnKeyUpTrigger, (event) => {
-                let key = event.source.key;
+                let key = event.sourceEvent.key;
                 if (key !== "Shift") {
                     key = key.toLowerCase();
                 }
@@ -36,14 +36,7 @@ export default class CharacterMovement {
                 }
                 console.log(this.keyStatus);
             })
-
-        )
-
+        );
     };
-
-    //Input detection
-    jumpKeyDown = false;
-    //inputs & keys
-    inputMap = {};
 
 }
