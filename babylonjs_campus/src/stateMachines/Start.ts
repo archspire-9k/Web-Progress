@@ -4,6 +4,7 @@ import State from "./State";
 import { Control } from "@babylonjs/gui/2D/controls/control";
 import { Button } from "@babylonjs/gui/2D/controls/button";
 import _goToQuad from "./Quad";
+import CharacterMovement from "../movement/CharacterMovement";
 
 export default async function _goToStart(engine: Engine, scene: Scene, setScene: Function, setState: Function) {
     engine.displayLoadingUI();
@@ -62,6 +63,11 @@ export default async function _goToStart(engine: Engine, scene: Scene, setScene:
     const character = new Sprite("player", characterManager);
     character.position.set(0, 0.45, 0);
     character.playAnimation(0, 3, true, 375);
+
+    // make camera look at character
+    camera.target = character.position;
+
+    const movement  = new CharacterMovement(newScene);
 
     // render light here
     const light1: HemisphericLight = new HemisphericLight("light1", new Vector3(1, 1, 0), newScene);
