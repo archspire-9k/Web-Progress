@@ -65,7 +65,7 @@ class App {
                 case State.START:
                     this._scene.render();
                     break;
-                case State.CUTSCENE:
+                case State.QUAD:
                     this._scene.render();
                     break;
                 // TODO: Implement Game state later

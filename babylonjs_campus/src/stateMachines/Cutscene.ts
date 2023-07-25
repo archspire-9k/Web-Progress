@@ -30,6 +30,6 @@ export default async function _goToCutscene(engine: Engine, scene: Scene, setSce
     //lastly set the current state to the start state and set the scene to the start scene
     scene.dispose();
     setScene(_cutScene);
-    setState(State.CUTSCENE);
+    setState(State.QUAD);
 
 }
