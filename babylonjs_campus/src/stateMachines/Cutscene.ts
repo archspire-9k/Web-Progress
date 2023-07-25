@@ -1,4 +1,4 @@
-import { Color4, Engine, Scene, UniversalCamera, Vector3 } from "@babylonjs/core";
+import { Color3, Color4, Engine, MeshBuilder, Scene, SceneLoader, StandardMaterial, UniversalCamera, Vector3 } from "@babylonjs/core";
 import State from "./State";
 
 export default async function _goToCutscene(engine: Engine, scene: Scene, setScene: Function, setState: Function) {
@@ -7,10 +7,17 @@ export default async function _goToCutscene(engine: Engine, scene: Scene, setSce
     //--SETUP SCENE--
     //dont detect any inputs from this ui while the game is loading
     scene.detachControl();
-    const _cutScene = new Scene(engine);
-    let camera = new UniversalCamera("camera1", Vector3.Zero(), _cutScene);
-    camera.setTarget(Vector3.Zero());
-    _cutScene.clearColor = new Color4(0, 0, 0, 1);
+    let _cutScene = new Scene(engine);
+    // let camera = new UniversalCamera("camera1", Vector3.Zero(), _cutScene);
+    // camera.setTarget(Vector3.Zero());
+    _cutScene.clearColor = new Color4(0, 0, 100, 1);
+
+    // SceneLoader.ImportMeshAsync("", "./low_poly_city/", "scene.gltf", _cutScene);
+
+    const box = MeshBuilder.CreateBox("box", { size: 0.25 }, _cutScene)
+    const boxMaterial = new StandardMaterial('boxMaterial', _cutScene);
+    boxMaterial.diffuseColor = Color3.Gray();
+    box.material = boxMaterial;
 
     await _cutScene.whenReadyAsync();
     engine.hideLoadingUI();

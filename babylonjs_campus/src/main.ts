@@ -1,4 +1,4 @@
-import { Color3, Engine, HemisphericLight, LightGizmo, MeshBuilder, Scene, StandardMaterial, UtilityLayerRenderer, Vector3 } from '@babylonjs/core';
+import { Color3, Engine, HemisphericLight, LightGizmo, MeshBuilder, Scene, SceneLoader, StandardMaterial, UtilityLayerRenderer, Vector3 } from '@babylonjs/core';
 import "@babylonjs/loaders/glTF";
 import "@babylonjs/core/Debug/debugLayer";
 import "@babylonjs/inspector";
@@ -87,13 +87,6 @@ class App {
                 default: break;
             }
         });
-
-        // render meshes here
-        // TODO: change this to a function
-        const box = MeshBuilder.CreateBox("box", { size: 0.25 }, this._scene)
-        const boxMaterial = new StandardMaterial('boxMaterial', this._scene);
-        boxMaterial.diffuseColor = Color3.Gray();
-        box.material = boxMaterial;
 
         // render light here
         // const targetLight = new PointLight("light", new Vector3(0, 0.5, 0), scene);

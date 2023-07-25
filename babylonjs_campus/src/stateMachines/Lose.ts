@@ -22,7 +22,7 @@ export default async function _goToLose(engine: Engine, scene: Scene) {
     guiMenu.addControl(mainBtn);
     //this handles interactions with the start button attached to the scene
     mainBtn.onPointerUpObservable.add(() => {
-        _goToStart(engine, scene);
+        _goToStart({ engine, scene });
     });
 
     //--SCENE FINISHED LOADING--

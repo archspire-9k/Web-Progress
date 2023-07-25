@@ -1,4 +1,4 @@
-import { Engine, Scene } from "@babylonjs/core";
+import { Color3, Engine, MeshBuilder, Scene, StandardMaterial } from "@babylonjs/core";
 import { AdvancedDynamicTexture } from "@babylonjs/gui/2D/advancedDynamicTexture";
 import createScene from "../createScene";
 import State from "./State";
@@ -34,6 +34,13 @@ export default async function _goToStart(engine: Engine, scene: Scene, setScene:
         // remove scene
         scene.detachControl();
     });
+
+    // render meshes here
+    // TODO: change this to a function
+    const box = MeshBuilder.CreateBox("box", { size: 0.25 }, newScene)
+    const boxMaterial = new StandardMaterial('boxMaterial', newScene);
+    boxMaterial.diffuseColor = Color3.Gray();
+    box.material = boxMaterial;
 
     await newScene.whenReadyAsync();
     engine.hideLoadingUI();
