@@ -1,4 +1,4 @@
-import { Color3, Color4, Engine, MeshBuilder, Scene, SceneLoader, StandardMaterial, UniversalCamera, Vector3 } from "@babylonjs/core";
+import { Color3, Color4, Engine, HemisphericLight, MeshBuilder, Scene, SceneLoader, StandardMaterial, UniversalCamera, Vector3 } from "@babylonjs/core";
 import State from "./State";
 
 export default async function _goToCutscene(engine: Engine, scene: Scene, setScene: Function, setState: Function) {
@@ -11,6 +11,10 @@ export default async function _goToCutscene(engine: Engine, scene: Scene, setSce
     let camera = new UniversalCamera("camera1", Vector3.Zero(), _cutScene);
     camera.setTarget(Vector3.Zero());
     _cutScene.clearColor = new Color4(0, 0, 100, 1);
+
+    // render light here
+    // const targetLight = new PointLight("light", new Vector3(0, 0.5, 0), scene);
+    const light1: HemisphericLight = new HemisphericLight("light1", new Vector3(1, 1, 0), _cutScene);
 
     // SceneLoader.ImportMeshAsync("", "./low_poly_city/", "scene.gltf", _cutScene);
 
