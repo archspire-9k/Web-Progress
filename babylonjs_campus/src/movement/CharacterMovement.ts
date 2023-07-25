@@ -1,4 +1,4 @@
-import { ActionManager, ExecuteCodeAction, Scene } from "@babylonjs/core";
+import { ActionManager, ExecuteCodeAction, Scene, Sprite } from "@babylonjs/core";
 
 export default class CharacterMovement {
 
@@ -10,7 +10,7 @@ export default class CharacterMovement {
         Shift: false
     }
 
-    constructor(scene: Scene) {
+    constructor(scene: Scene, character: Sprite) {
         scene.actionManager = new ActionManager(scene);
 
         scene.actionManager.registerAction(
@@ -37,6 +37,21 @@ export default class CharacterMovement {
                 console.log(this.keyStatus);
             })
         );
+
+        scene.onBeforeRenderObservable.add(() => {
+            if (this.keyStatus.d) {
+                character.position._x -= 0.1;
+            }
+            else if (this.keyStatus.a) {
+                character.position._x += 0.1;
+            }
+            else if (this.keyStatus.w) {
+                character.position._z -= 0.1;
+            }
+            else if (this.keyStatus.s) {
+                character.position._z += 0.1;
+            }
+        })
     };
 
 }

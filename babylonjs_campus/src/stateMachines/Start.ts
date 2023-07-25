@@ -21,7 +21,7 @@ export default async function _goToStart(engine: Engine, scene: Scene, setScene:
     camera.inputs.addMouseWheel();
 
     camera.wheelPrecision = 10;
-    
+
     // add events here
     // scene.onPointerDown = function rayCast() {
     //     const hit = scene.pick(scene.pointerX, scene.pointerY);
@@ -67,7 +67,8 @@ export default async function _goToStart(engine: Engine, scene: Scene, setScene:
     // make camera look at character
     camera.target = character.position;
 
-    const movement  = new CharacterMovement(newScene);
+    // implement movement here
+    const movement = new CharacterMovement(newScene, character);
 
     // render light here
     const light1: HemisphericLight = new HemisphericLight("light1", new Vector3(1, 1, 0), newScene);
