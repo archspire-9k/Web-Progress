@@ -60,7 +60,7 @@ export default async function _goToStart(engine: Engine, scene: Scene, setScene:
     const characterManager = new SpriteManager('character', "./sprites/knight_idle.png", 1, 42, newScene);
     characterManager.pixelPerfect = true;
     const character = new Sprite("player", characterManager);
-    character.position.set(0, 1, 0);
+    character.position.set(0, 0.45, 0);
     character.playAnimation(0, 3, true, 375);
 
     // render light here
