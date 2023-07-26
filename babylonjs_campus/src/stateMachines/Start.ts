@@ -58,9 +58,10 @@ export default async function _goToStart(engine: Engine, scene: Scene, setScene:
     groundMaterial.diffuseColor = Color3.Green();
     ground.material = groundMaterial;
 
-    const characterManager = new SpriteManager('character', "./sprites/knight_idle.png", 1, 42, newScene);
+    const characterManager = new SpriteManager('character', "./sprites/SpriteSheet.png", 1, {width: 23.2222, height: 36.2222}, newScene);
     characterManager.pixelPerfect = true;
     const character = new Sprite("player", characterManager);
+    character.width = 0.6411;
     character.position.set(0, 0.45, 0);
 
     // make camera look at character
