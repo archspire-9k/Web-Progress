@@ -139,11 +139,6 @@ export default class Player {
     }
 
     private _animatePlayer() {
-        if(this._input.keyStatus.d) {
-            this._anim.walkRight(this._player);
-        } else if(!this._input.keyStatus.a && !this._input.keyStatus.d && !this._input.keyStatus.w && !this._input.keyStatus.s) {
-            this._anim.idle(this._player);
-        }
-
+        this._anim.loadAnimation(this._player, this._input.currentAnim);
     };
 }
