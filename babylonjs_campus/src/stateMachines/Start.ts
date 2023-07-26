@@ -17,12 +17,6 @@ export default async function _goToStart(engine: Engine, scene: Scene, setScene:
 
     newScene.clearColor = Color4.FromHexString('#cdd1dd');
 
-    var camera: ArcRotateCamera = new ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 3, 2, Vector3.Zero(), newScene);
-    camera.attachControl(true);
-    camera.inputs.addMouseWheel();
-
-    camera.wheelPrecision = 10;
-
     // add events here
     // scene.onPointerDown = function rayCast() {
     //     const hit = scene.pick(scene.pointerX, scene.pointerY);
@@ -65,11 +59,11 @@ export default async function _goToStart(engine: Engine, scene: Scene, setScene:
     character.width = 0.6411;
     character.position.set(0, 0.45, 0);
 
-    // make camera look at character
-    camera.target = character.position;
-
     // implement movement here
-    const movement = new Player(newScene, character);
+    const movement = new CharacterMovement(newScene);
+    const player = new Player(newScene, character, movement);
+
+    const camera = player.activatePlayerCamera(newScene);
 
     // render light here
     const light1: HemisphericLight = new HemisphericLight("light1", new Vector3(1, 1, 0), newScene);

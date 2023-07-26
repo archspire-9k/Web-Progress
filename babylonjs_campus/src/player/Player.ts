@@ -23,7 +23,7 @@ export default class Player {
     };
 
     //const values
-    private static readonly PLAYER_SPEED: number = 0.45;
+    private static readonly PLAYER_SPEED: number = 0.15;
     private static readonly ORIGINAL_TILT: Vector3 = new Vector3(0.5934119456780721, 0, 0);
 
     //player movement vars
@@ -31,23 +31,21 @@ export default class Player {
     private _h: number;
     private _v: number;
 
-    private _moveDirection: Vector2 = new Vector2();
+    private _moveDirection: Vector2 = Vector2.Zero();
     private _inputAmt: number;
 
-    constructor(scene: Scene, player: Sprite) {
-        this._input = new CharacterMovement(scene);
+    constructor(scene: Scene, player: Sprite, playerInput: CharacterMovement) {
+        this._input = playerInput;
         this._player = player;
         this._setupPlayerCamera(scene);
         this._updatePosition();
-
+        console.log("created player")
 
     }
 
     private _updatePosition() {
-        this._moveDirection = Vector2.Zero(); // vector that holds movement information
         this._h = this._input.inputVector.x; //x-axis
         this._v = this._input.inputVector.y; //z-axis
-
         //--MOVEMENTS BASED ON CAMERA (as it rotates)--
         let fwd = this._camRoot.forward;
         let right = this._camRoot.right;
@@ -56,8 +54,9 @@ export default class Player {
 
         //movement based off of camera's view
         let move = correctedHorizontal.addInPlace(correctedVertical);
-
         this._moveDirection = new Vector2(move.normalize().x, move.normalize().z);
+        
+
 
         //clamp the input value so that diagonal movement isn't twice as fast
         let inputMag = Math.abs(this._h) + Math.abs(this._v);
@@ -71,7 +70,8 @@ export default class Player {
 
         //final movement that takes into consideration the inputs
         this._moveDirection = this._moveDirection.scaleInPlace(this._inputAmt * Player.PLAYER_SPEED);
-        console.log(this._moveDirection);
+        this._player.position.set(this._player.position.x + this._moveDirection.x, 0.45, this._player.position.z + this._moveDirection.y);
+        // console.log(this._player.position)
     }
 
     public activatePlayerCamera(scene: Scene): UniversalCamera {
@@ -110,7 +110,7 @@ export default class Player {
     }
 
     private _updateCamera(): void {
-         //trigger areas for rotating camera view
+        //trigger areas for rotating camera view
         //  if (this._player.intersectsMesh(this.scene.getMeshByName("cornerTrigger"))) {
         //     if (this._input.horizontalAxis > 0) { //rotates to the right                
         //         this._camRoot.rotation = Vector3.Lerp(this._camRoot.rotation, new Vector3(this._camRoot.rotation.x, Math.PI / 2, this._camRoot.rotation.z), 0.4);

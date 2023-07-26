@@ -84,7 +84,6 @@ export default class CharacterMovement {
         }
 
         this.inputVector.normalize();
-        console.log(this.inputVector);
     }
 
 }
