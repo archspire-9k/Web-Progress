@@ -2,13 +2,15 @@ import { ActionManager, ExecuteCodeAction, Scene, Sprite } from "@babylonjs/core
 
 export default class CharacterMovement {
 
-    keyStatus = {
+    private _keyStatus = {
         w: false,
         s: false,
         a: false,
         d: false,
         Shift: false
     }
+
+    private _moveDirection
 
     constructor(scene: Scene, character: Sprite) {
         scene.actionManager = new ActionManager(scene);
@@ -19,10 +21,10 @@ export default class CharacterMovement {
                 if (key !== "Shift") {
                     key = key.toLowerCase();
                 }
-                if (key in this.keyStatus) {
-                    this.keyStatus[key] = true;
+                if (key in this._keyStatus) {
+                    this._keyStatus[key] = true;
                 }
-                console.log(this.keyStatus);
+                console.log(this._keyStatus);
             }));
 
         scene.actionManager.registerAction(
@@ -31,27 +33,33 @@ export default class CharacterMovement {
                 if (key !== "Shift") {
                     key = key.toLowerCase();
                 }
-                if (key in this.keyStatus) {
-                    this.keyStatus[key] = false;
+                if (key in this._keyStatus) {
+                    this._keyStatus[key] = false;
                 }
-                console.log(this.keyStatus);
+                console.log(this._keyStatus);
             })
         );
 
         scene.onBeforeRenderObservable.add(() => {
-            if (this.keyStatus.d) {
-                character.position._x -= 0.1;
+            // if (this._keyStatus.d) {
+            //     character.position._x -= 0.1;
+            // }
+
+            if (!this._keyStatus.w && this._keyStatus.s) {
+                character.position._z += 0.1;
             }
-            else if (this.keyStatus.a) {
-                character.position._x += 0.1;
-            }
-            else if (this.keyStatus.w) {
+            else if (this._keyStatus.w || this._keyStatus.a || this._keyStatus.d) {
                 character.position._z -= 0.1;
             }
-            else if (this.keyStatus.s) {
-                character.position._z += 0.1;
+            if (this._keyStatus.a) {
+                character.position._x += 0.1;
             }
         })
     };
+
+    private getDirection() {
+
+        
+    }
 
 }
