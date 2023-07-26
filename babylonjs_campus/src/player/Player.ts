@@ -1,12 +1,13 @@
-import { Scene, Sprite, TransformNode, Vector2 } from "@babylonjs/core";
+import { Scene, Sprite, TransformNode, UniversalCamera, Vector2 } from "@babylonjs/core";
 import CharacterMovement from "./CharacterMovement";
 
 export default class Player {
     private _input: CharacterMovement;
-
+    private _scene: Scene;
     private _player: Sprite;
 
     //Camera
+    private camera: UniversalCamera;
     private _camRoot: TransformNode;
     private _yTilt: TransformNode;
 
@@ -35,7 +36,7 @@ export default class Player {
     constructor(scene: Scene, player: Sprite) {
         this._input = new CharacterMovement(scene);
         this._player = player;
-
+        this._scene = scene;
 
     }
 
@@ -64,5 +65,26 @@ export default class Player {
         } else {
             this._inputAmt = inputMag;
         }
+
+        //final movement that takes into consideration the inputs
+        this._moveDirection = this._moveDirection.scaleInPlace(this._inputAmt * Player.PLAYER_SPEED);
+    }
+
+    public activatePlayerCamera(): UniversalCamera {
+        this._scene.registerBeforeRender(() => {
+    
+            this._beforeRenderUpdate();
+            this._updateCamera();
+    
+        })
+        return this.camera;
+    }
+
+    //--CAMERA--
+    private _updateCamera(): void {
+    }
+
+    private _beforeRenderUpdate() {
+        
     }
 }
