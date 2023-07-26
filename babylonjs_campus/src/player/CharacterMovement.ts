@@ -64,6 +64,22 @@ export default class CharacterMovement {
             this.vertical = 0;
             this.verticalAxis = 0;
         }
+
+        //left - right movement
+        if (this.keyStatus.a) {
+            //lerp will create a scalar linearly interpolated amt between start and end scalar
+            //taking current horizontal and how long you hold, will go up to -1(all the way left)
+            this.horizontal = Scalar.Lerp(this.horizontal, -1, 0.2);
+            this.horizontalAxis = -1;
+
+        } else if (this.keyStatus.d) {
+            this.horizontal = Scalar.Lerp(this.horizontal, 1, 0.2);
+            this.horizontalAxis = 1;
+        }
+        else {
+            this.horizontal = 0;
+            this.horizontalAxis = 0;
+        }
     }
 
 }
