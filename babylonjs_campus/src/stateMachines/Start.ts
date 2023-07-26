@@ -62,7 +62,6 @@ export default async function _goToStart(engine: Engine, scene: Scene, setScene:
     characterManager.pixelPerfect = true;
     const character = new Sprite("player", characterManager);
     character.position.set(0, 0.45, 0);
-    character.playAnimation(0, 3, true, 375);
 
     // make camera look at character
     camera.target = character.position;
