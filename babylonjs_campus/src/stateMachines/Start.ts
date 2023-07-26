@@ -4,7 +4,7 @@ import State from "./State";
 import { Control } from "@babylonjs/gui/2D/controls/control";
 import { Button } from "@babylonjs/gui/2D/controls/button";
 import _goToQuad from "./Quad";
-import CharacterMovement from "../player/CharacterMovement";
+import CharacterMovement from "../player/Movement";
 import Player from "../player/Player";
 
 export default async function _goToStart(engine: Engine, scene: Scene, setScene: Function, setState: Function) {
@@ -60,8 +60,7 @@ export default async function _goToStart(engine: Engine, scene: Scene, setScene:
     character.position.set(0, 0.45, 0);
 
     // implement movement here
-    const movement = new CharacterMovement(newScene);
-    const player = new Player(newScene, character, movement);
+    const player = new Player(newScene, character);
 
     const camera = player.activatePlayerCamera(newScene);
 

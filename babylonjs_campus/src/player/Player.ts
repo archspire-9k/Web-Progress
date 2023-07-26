@@ -1,5 +1,6 @@
 import { Scene, Sprite, TransformNode, UniversalCamera, Vector2, Vector3 } from "@babylonjs/core";
-import CharacterMovement from "./CharacterMovement";
+import CharacterMovement from "./Movement";
+import { walkRight } from "./Animation";
 
 export default class Player {
     private _input: CharacterMovement;
@@ -10,17 +11,6 @@ export default class Player {
     private camera: UniversalCamera;
     private _camRoot: TransformNode;
     private _yTilt: TransformNode;
-
-    //animations
-
-    //TODO: add walk animation
-    private _walk() {
-
-    }
-
-    private _idle() {
-        this._player.playAnimation(0, 0, true, 375);
-    };
 
     //const values
     private static readonly PLAYER_SPEED: number = 0.15;
@@ -34,8 +24,8 @@ export default class Player {
     private _moveDirection: Vector2 = Vector2.Zero();
     private _inputAmt: number;
 
-    constructor(scene: Scene, player: Sprite, playerInput: CharacterMovement) {
-        this._input = playerInput;
+    constructor(scene: Scene, player: Sprite) {
+        this._input = new CharacterMovement(scene);
         this._player = player;
         this._setupPlayerCamera(scene);
         this._updatePosition();
@@ -142,6 +132,12 @@ export default class Player {
 
     private _beforeRenderUpdate() {
         this._updatePosition();
-        // this._animatePlayer();
+        this._animatePlayer();
     }
+
+    private _animatePlayer() {
+        if(this._input.keyStatus.d) {
+            walkRight(this._player);
+        }
+    };
 }
