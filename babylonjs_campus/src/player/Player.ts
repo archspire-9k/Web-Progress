@@ -70,12 +70,12 @@ export default class Player {
         this._moveDirection = this._moveDirection.scaleInPlace(this._inputAmt * Player.PLAYER_SPEED);
     }
 
-    public activatePlayerCamera(): UniversalCamera {
-        this._scene.registerBeforeRender(() => {
-    
+    public activatePlayerCamera(scene: Scene): UniversalCamera {
+        scene.registerBeforeRender(() => {
+
             this._beforeRenderUpdate();
             this._updateCamera();
-    
+
         })
         return this.camera;
     }
@@ -85,6 +85,6 @@ export default class Player {
     }
 
     private _beforeRenderUpdate() {
-        
+        this._updatePosition();
     }
 }
