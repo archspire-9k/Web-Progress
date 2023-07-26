@@ -4,7 +4,7 @@ import State from "./State";
 import { Control } from "@babylonjs/gui/2D/controls/control";
 import { Button } from "@babylonjs/gui/2D/controls/button";
 import _goToQuad from "./Quad";
-import CharacterMovement from "../movement/CharacterMovement";
+import CharacterMovement from "../player/CharacterMovement";
 
 export default async function _goToStart(engine: Engine, scene: Scene, setScene: Function, setState: Function) {
     engine.displayLoadingUI();
