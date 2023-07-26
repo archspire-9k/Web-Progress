@@ -1,4 +1,4 @@
-import { ArcRotateCamera, BackgroundMaterial, Color3, Color4, Engine, HemisphericLight, MeshBuilder, Scene, Sprite, SpriteManager, StandardMaterial, Texture, Vector3 } from "@babylonjs/core";
+import { ArcRotateCamera, BackgroundMaterial, Color3, Color4, Engine, HemisphericLight, MeshBuilder, Scene, Sprite, SpriteManager, SpriteMap, StandardMaterial, Texture, Vector3 } from "@babylonjs/core";
 import { AdvancedDynamicTexture } from "@babylonjs/gui/2D/advancedDynamicTexture";
 import State from "./State";
 import { Control } from "@babylonjs/gui/2D/controls/control";
@@ -53,7 +53,7 @@ export default async function _goToStart(engine: Engine, scene: Scene, setScene:
     groundMaterial.diffuseColor = Color3.Green();
     ground.material = groundMaterial;
 
-    const characterManager = new SpriteManager('character', "./sprites/SpriteSheet.png", 1, {width: 23.2222, height: 36.2222}, newScene);
+    const characterManager = new SpriteManager('character', "./sprites/SpriteSheet.png", 1, { width: 23.2222, height: 36.2222 }, newScene);
     characterManager.pixelPerfect = true;
     const character = new Sprite("player", characterManager);
     character.width = 0.6411;
