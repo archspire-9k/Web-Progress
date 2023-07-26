@@ -11,8 +11,7 @@ export default class CharacterMovement {
     }
 
     //simple movement
-    public horizontal: number = 0;
-    public vertical: number = 0;
+    public inputVector = Vector2.Zero();
     //tracks whether or not there is movement in that axis
     public horizontalAxis: number = 0;
     public verticalAxis: number = 0;
@@ -29,7 +28,6 @@ export default class CharacterMovement {
                 if (key in this.keyStatus) {
                     this.keyStatus[key] = true;
                 }
-                console.log(this.keyStatus);
             }));
 
         scene.actionManager.registerAction(
@@ -41,7 +39,6 @@ export default class CharacterMovement {
                 if (key in this.keyStatus) {
                     this.keyStatus[key] = false;
                 }
-                console.log(this.keyStatus);
             })
         );
 
@@ -55,13 +52,13 @@ export default class CharacterMovement {
         //forward - backwards movement
         if (this.keyStatus.w) {
             this.verticalAxis = 1;
-            this.vertical = Scalar.Lerp(this.vertical, 1, 0.2);
+            this.inputVector.y = Scalar.Lerp(this.inputVector.y, 1, 0.2);
 
         } else if (this.keyStatus.s) {
-            this.vertical = Scalar.Lerp(this.vertical, -1, 0.2);
+            this.inputVector.y = Scalar.Lerp(this.inputVector.y, -1, 0.2);
             this.verticalAxis = -1;
         } else {
-            this.vertical = 0;
+            this.inputVector.y = 0;
             this.verticalAxis = 0;
         }
 
@@ -69,17 +66,20 @@ export default class CharacterMovement {
         if (this.keyStatus.a) {
             //lerp will create a scalar linearly interpolated amt between start and end scalar
             //taking current horizontal and how long you hold, will go up to -1(all the way left)
-            this.horizontal = Scalar.Lerp(this.horizontal, -1, 0.2);
+            this.inputVector.x = Scalar.Lerp(this.inputVector.x, -1, 0.2);
             this.horizontalAxis = -1;
 
         } else if (this.keyStatus.d) {
-            this.horizontal = Scalar.Lerp(this.horizontal, 1, 0.2);
+            this.inputVector.x = Scalar.Lerp(this.inputVector.x, 1, 0.2);
             this.horizontalAxis = 1;
         }
         else {
-            this.horizontal = 0;
+            this.inputVector.x = 0;
             this.horizontalAxis = 0;
         }
+
+        this.inputVector.normalize();
+        console.log(this.inputVector);
     }
 
 }
