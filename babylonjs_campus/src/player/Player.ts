@@ -1,10 +1,9 @@
 import { Scene, Sprite, TransformNode, UniversalCamera, Vector2, Vector3 } from "@babylonjs/core";
 import CharacterMovement from "./Movement";
-import { walkRight } from "./Animation";
+import CharacterAnimation from "./Animation";
 
 export default class Player {
     private _input: CharacterMovement;
-    private _scene: Scene;
     private _player: Sprite;
 
     //Camera
@@ -21,11 +20,15 @@ export default class Player {
     private _h: number;
     private _v: number;
 
+    //player animation vars
+    private _anim: CharacterAnimation;
+
     private _moveDirection: Vector2 = Vector2.Zero();
     private _inputAmt: number;
 
     constructor(scene: Scene, player: Sprite) {
         this._input = new CharacterMovement(scene);
+        this._anim = new CharacterAnimation();
         this._player = player;
         this._setupPlayerCamera(scene);
         this._updatePosition();
@@ -137,7 +140,10 @@ export default class Player {
 
     private _animatePlayer() {
         if(this._input.keyStatus.d) {
-            walkRight(this._player);
+            this._anim.walkRight(this._player);
+        } else if(!this._input.keyStatus.a && !this._input.keyStatus.d && !this._input.keyStatus.w && !this._input.keyStatus.s) {
+            this._anim.idle(this._player);
         }
+
     };
 }

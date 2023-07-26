@@ -50,32 +50,30 @@ export default class CharacterMovement {
     private _getDirection() {
 
         //forward - backwards movement
-        if (this.keyStatus.w && this.keyStatus.s) {
-            this.inputVector.y = 0;
-            this.verticalAxis = 0;
-        } else if (this.keyStatus.w) {
+        if (this.keyStatus.w && !this.keyStatus.s) {
             this.verticalAxis = 1;
-            this.inputVector.y = Scalar.Lerp(this.inputVector.y, 1, 0.2);
+            this.inputVector.y = 1;
+            // this.inputVector.y = Scalar.Lerp(this.inputVector.y, 1, 0.2);
 
-        } else if (this.keyStatus.s) {
-            this.inputVector.y = Scalar.Lerp(this.inputVector.y, -1, 0.2);
+        } else if (this.keyStatus.s && !this.keyStatus.w) {
+            // this.inputVector.y = Scalar.Lerp(this.inputVector.y, -1, 0.2);
             this.verticalAxis = -1;
+            this.inputVector.y = -1;
         } else {
             this.inputVector.y = 0;
             this.verticalAxis = 0;
         }
 
         //left - right movement
-        if (this.keyStatus.a && this.keyStatus.d) {
-            this.inputVector.x = 0;
-            this.horizontalAxis = 0;
-        } else if (this.keyStatus.a) {
+        if (this.keyStatus.a && !this.keyStatus.d) {
             //lerp will create a scalar linearly interpolated amt between start and end scalar
             //taking current horizontal and how long you hold, will go up to -1(all the way left)
-            this.inputVector.x = Scalar.Lerp(this.inputVector.x, -1, 0.2);
+            // this.inputVector.x = Scalar.Lerp(this.inputVector.x, -1, 0.2);
+            this.inputVector.x = -1;
             this.horizontalAxis = -1;
-        } else if (this.keyStatus.d) {
-            this.inputVector.x = Scalar.Lerp(this.inputVector.x, 1, 0.2);
+        } else if (this.keyStatus.d && !this.keyStatus.a) {
+            // this.inputVector.x = Scalar.Lerp(this.inputVector.x, 1, 0.2);
+            this.inputVector.x = 1;
             this.horizontalAxis = 1;
         }
         else {
@@ -84,6 +82,7 @@ export default class CharacterMovement {
         }
 
         this.inputVector.normalize();
+        console.log(this.keyStatus);
     }
 
 }
