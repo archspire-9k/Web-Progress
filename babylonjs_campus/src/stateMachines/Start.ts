@@ -1,10 +1,9 @@
-import { ArcRotateCamera, BackgroundMaterial, Color3, Color4, Engine, HemisphericLight, MeshBuilder, Scene, Sprite, SpriteManager, SpriteMap, StandardMaterial, Texture, Vector3 } from "@babylonjs/core";
+import { Color3, Color4, Engine, HemisphericLight, MeshBuilder, Scene, Sprite, SpriteManager, StandardMaterial, Vector3 } from "@babylonjs/core";
 import { AdvancedDynamicTexture } from "@babylonjs/gui/2D/advancedDynamicTexture";
 import State from "./State";
 import { Control } from "@babylonjs/gui/2D/controls/control";
 import { Button } from "@babylonjs/gui/2D/controls/button";
 import _goToQuad from "./Quad";
-import CharacterMovement from "../player/Movement";
 import Player from "../player/Player";
 
 export default async function _goToStart(engine: Engine, scene: Scene, setScene: Function, setState: Function) {
