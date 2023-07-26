@@ -1,8 +1,8 @@
-import { ActionManager, ExecuteCodeAction, Scene, Sprite, Vector2 } from "@babylonjs/core";
+import { ActionManager, ExecuteCodeAction, Scalar, Scene, Sprite, Vector2 } from "@babylonjs/core";
 
 export default class CharacterMovement {
 
-    private _keyStatus = {
+    public keyStatus = {
         w: false,
         s: false,
         a: false,
@@ -10,16 +10,14 @@ export default class CharacterMovement {
         Shift: false
     }
 
-    //player movement vars
-    private _deltaTime: number = 0;
-    private _h: number;
-    private _v: number;
-    
-    // store current movement direction
-    private _moveDirection = Vector2.Zero();
+    //simple movement
+    public horizontal: number = 0;
+    public vertical: number = 0;
+    //tracks whether or not there is movement in that axis
+    public horizontalAxis: number = 0;
+    public verticalAxis: number = 0;
 
-
-    constructor(scene: Scene, character: Sprite) {
+    constructor(scene: Scene) {
         scene.actionManager = new ActionManager(scene);
 
         scene.actionManager.registerAction(
@@ -28,10 +26,10 @@ export default class CharacterMovement {
                 if (key !== "Shift") {
                     key = key.toLowerCase();
                 }
-                if (key in this._keyStatus) {
-                    this._keyStatus[key] = true;
+                if (key in this.keyStatus) {
+                    this.keyStatus[key] = true;
                 }
-                console.log(this._keyStatus);
+                console.log(this.keyStatus);
             }));
 
         scene.actionManager.registerAction(
@@ -40,33 +38,32 @@ export default class CharacterMovement {
                 if (key !== "Shift") {
                     key = key.toLowerCase();
                 }
-                if (key in this._keyStatus) {
-                    this._keyStatus[key] = false;
+                if (key in this.keyStatus) {
+                    this.keyStatus[key] = false;
                 }
-                console.log(this._keyStatus);
+                console.log(this.keyStatus);
             })
         );
 
         scene.onBeforeRenderObservable.add(() => {
-            // if (this._keyStatus.d) {
-            //     character.position._x -= 0.1;
-            // }
-
-            if (!this._keyStatus.w && this._keyStatus.s) {
-                character.position._z += 0.1;
-            }
-            else if (this._keyStatus.w || this._keyStatus.a || this._keyStatus.d) {
-                character.position._z -= 0.1;
-            }
-            if (this._keyStatus.a) {
-                character.position._x += 0.1;
-            }
+            this._getDirection();
         })
     };
 
-    private getDirection() {
+    private _getDirection() {
 
-        
+        //forward - backwards movement
+        if (this.keyStatus.w) {
+            this.verticalAxis = 1;
+            this.vertical = Scalar.Lerp(this.vertical, 1, 0.2);
+
+        } else if (this.keyStatus.s) {
+            this.vertical = Scalar.Lerp(this.vertical, -1, 0.2);
+            this.verticalAxis = -1;
+        } else {
+            this.vertical = 0;
+            this.verticalAxis = 0;
+        }
     }
 
 }

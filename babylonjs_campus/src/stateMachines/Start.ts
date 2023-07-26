@@ -68,7 +68,7 @@ export default async function _goToStart(engine: Engine, scene: Scene, setScene:
     camera.target = character.position;
 
     // implement movement here
-    const movement = new CharacterMovement(newScene, character);
+    const movement = new CharacterMovement(newScene);
 
     // render light here
     const light1: HemisphericLight = new HemisphericLight("light1", new Vector3(1, 1, 0), newScene);
