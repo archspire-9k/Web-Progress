@@ -52,5 +52,17 @@ export default class Player {
 
         //movement based off of camera's view
         let move = correctedHorizontal.addInPlace(correctedVertical);
+
+        this._moveDirection = new Vector2(move.normalize().x, move.normalize().z);
+
+        //clamp the input value so that diagonal movement isn't twice as fast
+        let inputMag = Math.abs(this._h) + Math.abs(this._v);
+        if (inputMag < 0) {
+            this._inputAmt = 0;
+        } else if (inputMag > 1) {
+            this._inputAmt = 1;
+        } else {
+            this._inputAmt = inputMag;
+        }
     }
 }
