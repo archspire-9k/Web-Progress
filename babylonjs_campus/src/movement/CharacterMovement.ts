@@ -1,4 +1,4 @@
-import { ActionManager, ExecuteCodeAction, Scene, Sprite } from "@babylonjs/core";
+import { ActionManager, ExecuteCodeAction, Scene, Sprite, Vector2 } from "@babylonjs/core";
 
 export default class CharacterMovement {
 
@@ -10,7 +10,14 @@ export default class CharacterMovement {
         Shift: false
     }
 
-    private _moveDirection
+    //player movement vars
+    private _deltaTime: number = 0;
+    private _h: number;
+    private _v: number;
+    
+    // store current movement direction
+    private _moveDirection = Vector2.Zero();
+
 
     constructor(scene: Scene, character: Sprite) {
         scene.actionManager = new ActionManager(scene);
