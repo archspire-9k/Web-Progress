@@ -38,7 +38,7 @@ export default class CharacterAnimation {
                 player.playAnimation(46, 53, true, 125);
                 break;
             case "upright":
-                player.playAnimation(19, 26, true, 125);
+                player.playAnimation(28, 35, true, 125);
                 break;
             case "downright":
                 player.playAnimation(73, 80, true, 125);
