@@ -17,7 +17,6 @@ export default class CharacterAnimation {
     }
 
     private _playAnimation(player: Sprite) {
-        console.log(this._currentAnim)
         switch (this._currentAnim) {
             //TODO: rename to idledown
             case "idleidle":
@@ -37,6 +36,7 @@ export default class CharacterAnimation {
                 break;
             case "upleft":
                 player.playAnimation(46, 53, true, 125);
+                break;
             case "upright":
                 player.playAnimation(19, 26, true, 125);
                 break;
