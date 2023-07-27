@@ -139,6 +139,6 @@ export default class Player {
     }
 
     private _animatePlayer() {
-        this._anim.loadAnimation(this._player, this._input.currentAnim);
+        this._anim.loadAnimation(this._player, this._input.currentVerticalAnim, this._input.currentHorizontalAnim);
     };
 }

@@ -6,33 +6,48 @@ export default class CharacterAnimation {
 
     private _currentAnim: string = "idle";
 
-    public loadAnimation(player: Sprite, currentAnim: string) {
-        if (this._currentAnim !== currentAnim) {
-            // player.playAnimation(1, 7, true, 125);
-            this._currentAnim = currentAnim;
+    // combine the up down and left right animation indicator to play the specified animation
+    public loadAnimation(player: Sprite, currentVerticalAnim: string, currentHorizontalAnim: string) {
+        const temp = currentVerticalAnim + currentHorizontalAnim;
+        if (this._currentAnim !== temp) {
+            this._currentAnim = temp;
             this._playAnimation(player);
         }
 
     }
 
     private _playAnimation(player: Sprite) {
+        console.log(this._currentAnim)
         switch (this._currentAnim) {
             //TODO: rename to idledown
-            case "idle":
+            case "idleidle":
                 player.playAnimation(0, 0, true, 125);
                 break;
-            case "up":
+            case "upidle":
                 player.playAnimation(37, 44, true, 125);
                 break;
-            case "down":
+            case "downidle":
                 player.playAnimation(1, 8, true, 125);
                 break;
-            case "left":
+            case "idleleft":
                 player.playAnimation(55, 62, true, 125);
                 break;
-            case "right":
+            case "idleright":
                 player.playAnimation(19, 26, true, 125);
                 break;
+            case "upleft":
+                player.playAnimation(46, 53, true, 125);
+            case "upright":
+                player.playAnimation(19, 26, true, 125);
+                break;
+            case "downright":
+                player.playAnimation(73, 80, true, 125);
+                break;
+            case "downleft":
+                player.playAnimation(64, 71, true, 125);
+                break;
+
+
             default:
                 break;
         }
